@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Api Documents</title>
+    <!-- needed for adaptive design -->
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1" name="viewport">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:300,400,700|Roboto:300,400,700" rel="stylesheet">
+
+</head>
+<body>
+<div id="redoc-container"></div>
+<script src="https://cdn.redoc.ly/redoc/latest/bundles/redoc.standalone.js"></script>
+<script>
+    Redoc.init('/api/main_swagger.json', {
+      "hideDownloadButton": true,
+      "sortOperationsAlphabetically": "true",
+      "sortTagsAlphabetically": "true",
+      "sortPropsAlphabetically": "true"
+    }, document.getElementById('redoc-container'))
+</script>
+</body>
+</html>

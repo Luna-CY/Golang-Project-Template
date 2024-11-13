@@ -1,0 +1,38 @@
+package task
+
+import (
+	"github.com/Luna-CY/Golang-Project-Template/internal/icontext"
+	"sync"
+	"time"
+)
+
+type oneTimeTask struct {
+	ctx         icontext.Context
+	tag         string
+	values      map[string]any
+	caller      func(ctx icontext.Context, values map[string]any, progress func(int64)) error
+	timeout     time.Duration
+	initialized int32
+	processing  int32
+	progress    int64
+	error       error
+}
+
+var to sync.Once
+var ti *Task
+
+func New() *Task {
+	to.Do(func() {
+		ti = &Task{
+			mutex: sync.Mutex{},
+			tasks: make(map[string]*oneTimeTask),
+		}
+	})
+
+	return ti
+}
+
+type Task struct {
+	mutex sync.Mutex
+	tasks map[string]*oneTimeTask
+}

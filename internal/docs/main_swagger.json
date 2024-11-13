@@ -1,0 +1,433 @@
+{
+    "consumes": [
+        "application/json"
+    ],
+    "produces": [
+        "application/json"
+    ],
+    "swagger": "2.0",
+    "info": {
+        "description": "\u003cdiv\u003e\n\u003ch2\u003e特定状态码约定\u003c/h2\u003e\n\u003ctable class=\"table\"\u003e\n\u003cthead\u003e\n\u003ctr\u003e\u003cth\u003ecode\u003c/th\u003e\u003cth style=\"width: 100%\"\u003edescription\u003c/th\u003e\u003c/tr\u003e\n\u003cthead\u003e\n\u003ctbody\u003e\n\u003ctr\u003e\u003ctd\u003e1100001\u003c/td\u003e\u003ctd\u003eInvalid Parameters\u003c/td\u003e\u003c/tr\u003e\n\u003ctr\u003e\u003ctd\u003e9999999\u003c/td\u003e\u003ctd\u003eServer Internal Error\u003c/td\u003e\u003c/tr\u003e\n\u003c/tbody\u003e\n\u003c/table\u003e\n\u003c/div\u003e",
+        "title": "API Documents",
+        "contact": {},
+        "version": "1.0"
+    },
+    "host": "example.com",
+    "basePath": "/api",
+    "paths": {
+        "/example/create": {
+            "post": {
+                "tags": [
+                    "category/example"
+                ],
+                "summary": "create",
+                "parameters": [
+                    {
+                        "description": "request body",
+                        "name": "param",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/example.CreateRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful. click to expand response structure",
+                        "schema": {
+                            "$ref": "#/definitions/response.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/example/detail": {
+            "post": {
+                "tags": [
+                    "category/example"
+                ],
+                "summary": "detail",
+                "parameters": [
+                    {
+                        "description": "request body",
+                        "name": "param",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/example.DetailRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful. click to expand response structure",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/response.Response"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/example.DetailResponse"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+        "/example/list": {
+            "post": {
+                "tags": [
+                    "category/example"
+                ],
+                "summary": "list for data",
+                "parameters": [
+                    {
+                        "description": "request body",
+                        "name": "param",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/example.ListRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful. click to expand response structure",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/response.Response"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/response.BaseDataList-example_ListItem"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+        "/example/update": {
+            "post": {
+                "tags": [
+                    "category/example"
+                ],
+                "summary": "update",
+                "parameters": [
+                    {
+                        "description": "request body",
+                        "name": "param",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/example.UpdateRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful. click to expand response structure",
+                        "schema": {
+                            "$ref": "#/definitions/response.Response"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "example.CreateRequest": {
+            "type": "object",
+            "required": [
+                "field1",
+                "field2",
+                "field3",
+                "field4"
+            ],
+            "properties": {
+                "field1": {
+                    "description": "field1",
+                    "type": "string",
+                    "maxLength": 255
+                },
+                "field2": {
+                    "description": "field2",
+                    "type": "integer",
+                    "maximum": 999999,
+                    "minimum": 1
+                },
+                "field3": {
+                    "description": "field3",
+                    "type": "boolean"
+                },
+                "field4": {
+                    "description": "field4, enums: 1 - A, 2 - B, 3 - C",
+                    "type": "integer",
+                    "enum": [
+                        1,
+                        2,
+                        3
+                    ]
+                }
+            }
+        },
+        "example.DetailRequest": {
+            "type": "object",
+            "required": [
+                "id"
+            ],
+            "properties": {
+                "id": {
+                    "description": "record id",
+                    "type": "integer"
+                }
+            }
+        },
+        "example.DetailResponse": {
+            "type": "object",
+            "required": [
+                "create_time",
+                "field1",
+                "field2",
+                "field3",
+                "field4",
+                "id",
+                "update_time"
+            ],
+            "properties": {
+                "create_time": {
+                    "description": "create time",
+                    "type": "integer"
+                },
+                "field1": {
+                    "description": "field1",
+                    "type": "string"
+                },
+                "field2": {
+                    "description": "field2",
+                    "type": "integer"
+                },
+                "field3": {
+                    "description": "field3",
+                    "type": "boolean"
+                },
+                "field4": {
+                    "description": "field4, enums: 1 - A, 2 - B, 3 - C",
+                    "type": "integer",
+                    "enum": [
+                        1,
+                        2,
+                        3
+                    ]
+                },
+                "id": {
+                    "description": "record id",
+                    "type": "integer"
+                },
+                "update_time": {
+                    "description": "update time",
+                    "type": "integer"
+                }
+            }
+        },
+        "example.ListItem": {
+            "type": "object",
+            "required": [
+                "field1",
+                "field2",
+                "field3",
+                "field4"
+            ],
+            "properties": {
+                "field1": {
+                    "description": "field1",
+                    "type": "string"
+                },
+                "field2": {
+                    "description": "field2",
+                    "type": "integer"
+                },
+                "field3": {
+                    "description": "field3",
+                    "type": "boolean"
+                },
+                "field4": {
+                    "description": "field4, enums: 1 - A, 2 - B, 3 - C",
+                    "type": "integer",
+                    "enum": [
+                        1,
+                        2,
+                        3
+                    ]
+                }
+            }
+        },
+        "example.ListRequest": {
+            "type": "object",
+            "properties": {
+                "field4": {
+                    "description": "filter by field4, enums: 0 - All, 1 - A, 2 - B, 3 - C",
+                    "type": "integer",
+                    "enum": [
+                        0,
+                        1,
+                        2,
+                        3
+                    ]
+                },
+                "page": {
+                    "description": "page",
+                    "type": "integer",
+                    "maximum": 100,
+                    "minimum": 1
+                },
+                "size": {
+                    "description": "number of items per page",
+                    "type": "integer",
+                    "maximum": 50,
+                    "minimum": 5
+                }
+            }
+        },
+        "example.UpdateRequest": {
+            "type": "object",
+            "required": [
+                "field1",
+                "field2",
+                "field3",
+                "field4",
+                "id"
+            ],
+            "properties": {
+                "field1": {
+                    "description": "field1",
+                    "type": "string",
+                    "maxLength": 255
+                },
+                "field2": {
+                    "description": "field2",
+                    "type": "integer",
+                    "maximum": 999999,
+                    "minimum": 1
+                },
+                "field3": {
+                    "description": "field3",
+                    "type": "boolean"
+                },
+                "field4": {
+                    "description": "field4, enums: 1 - A, 2 - B, 3 - C",
+                    "type": "integer",
+                    "enum": [
+                        1,
+                        2,
+                        3
+                    ]
+                },
+                "id": {
+                    "description": "record id",
+                    "type": "integer"
+                }
+            }
+        },
+        "response.BaseDataList-example_ListItem": {
+            "type": "object",
+            "required": [
+                "data",
+                "page",
+                "size",
+                "total"
+            ],
+            "properties": {
+                "data": {
+                    "description": "data list",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/example.ListItem"
+                    }
+                },
+                "page": {
+                    "description": "page number",
+                    "type": "integer"
+                },
+                "size": {
+                    "description": "number of items per page",
+                    "type": "integer"
+                },
+                "total": {
+                    "description": "total count",
+                    "type": "integer"
+                }
+            }
+        },
+        "response.Code": {
+            "type": "integer",
+            "enum": [
+                0,
+                9100001,
+                9100002,
+                9999999
+            ],
+            "x-enum-comments": {
+                "InvalidParams": "invalid parameters",
+                "NeedAuthorization": "need authorization",
+                "Ok": "OK",
+                "ServerInternalError": "internal server error"
+            },
+            "x-enum-varnames": [
+                "Ok",
+                "InvalidParams",
+                "NeedAuthorization",
+                "ServerInternalError"
+            ]
+        },
+        "response.Response": {
+            "type": "object",
+            "required": [
+                "code",
+                "msg",
+                "request_id"
+            ],
+            "properties": {
+                "code": {
+                    "description": "code, 0 if success, non-zero otherwise",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/response.Code"
+                        }
+                    ]
+                },
+                "data": {
+                    "description": "data"
+                },
+                "msg": {
+                    "description": "message, OK on success, error message otherwise",
+                    "type": "string"
+                },
+                "request_id": {
+                    "description": "request id, used for tracking",
+                    "type": "string"
+                }
+            }
+        }
+    },
+    "securityDefinitions": {
+        "ApiKeyAuth": {
+            "type": "apiKey",
+            "name": "Authorization",
+            "in": "header"
+        }
+    }
+}

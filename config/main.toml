@@ -1,0 +1,4 @@
+debug = false
+
+[logger]
+outputs = ["stdout", "./logs/main.log"]

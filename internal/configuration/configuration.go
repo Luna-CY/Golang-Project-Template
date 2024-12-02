@@ -20,6 +20,9 @@ var Configuration struct {
 			} `mapstructure:"conn_pool"` // connection pool configuration
 		} `mapstructure:"mysql"`
 	} `mapstructure:"database"` // database configuration
+	Cache struct {
+		Prefix string `mapstructure:"prefix"` // cache key prefix
+	} `mapstructure:"cache"` // cache configuration
 	Server struct {
 		Http struct {
 			Web struct {

@@ -1,19 +1,19 @@
 package example
 
 import (
-	"github.com/Luna-CY/Golang-Project-Template/internal/icontext"
-	"github.com/Luna-CY/Golang-Project-Template/internal/ierror"
+	"github.com/Luna-CY/Golang-Project-Template/internal/context"
+	"github.com/Luna-CY/Golang-Project-Template/internal/errors"
 	"github.com/Luna-CY/Golang-Project-Template/internal/logger"
 	"github.com/Luna-CY/Golang-Project-Template/internal/util/pointer"
 	"github.com/Luna-CY/Golang-Project-Template/model"
 	"runtime/debug"
 )
 
-func (cls *Example) CreateExample(ctx icontext.Context, field1 string, field2 uint64, field3 bool, field4 model.ExampleEnumFieldType) (*model.Example, error) {
+func (cls *Example) CreateExample(ctx context.Context, field1 string, field2 uint64, field3 bool, field4 model.ExampleEnumFieldType) (*model.Example, error) {
 	if "" == field1 || 0 == field2 {
 		logger.SugarLogger(ctx).Errorf("I.S.Example.CreateExample: field1 is %s field2 is %d stack %s", field1, field2, string(debug.Stack()))
 
-		return nil, ierror.ErrorServerInternalError
+		return nil, errors.ErrorServerInternalError
 	}
 
 	var example = new(model.Example)

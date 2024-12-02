@@ -1,9 +1,8 @@
 package router
 
 import (
-	"errors"
-	"github.com/Luna-CY/Golang-Project-Template/internal/icontext/icontextutil"
-	"github.com/Luna-CY/Golang-Project-Template/internal/ierror"
+	"github.com/Luna-CY/Golang-Project-Template/internal/context/contextutil"
+	"github.com/Luna-CY/Golang-Project-Template/internal/errors"
 	"github.com/Luna-CY/Golang-Project-Template/internal/server/http/response"
 	"github.com/gin-gonic/gin"
 	"net/http"
@@ -15,9 +14,9 @@ func Wrapper(handler func(*gin.Context) (response.Code, any, error)) gin.Handler
 		if response.Ok != code || nil != err {
 			var message = err.Error()
 
-			var ie *ierror.Error
+			var ie *errors.Error
 			if errors.As(err, &ie) {
-				message = ie.I18n(icontextutil.NewContextWithGin(c))
+				message = ie.I18n(contextutil.NewContextWithGin(c))
 			}
 
 			if nil != res {

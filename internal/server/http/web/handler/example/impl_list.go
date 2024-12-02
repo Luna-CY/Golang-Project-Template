@@ -1,7 +1,7 @@
 package example
 
 import (
-	"github.com/Luna-CY/Golang-Project-Template/internal/icontext/icontextutil"
+	"github.com/Luna-CY/Golang-Project-Template/internal/context/contextutil"
 	"github.com/Luna-CY/Golang-Project-Template/internal/server/http/request"
 	"github.com/Luna-CY/Golang-Project-Template/internal/server/http/response"
 	"github.com/Luna-CY/Golang-Project-Template/internal/util/pointer"
@@ -41,7 +41,7 @@ func (cls *Example) List(c *gin.Context) (response.Code, any, error) {
 
 	// create context with gin context
 	// not allow use gin context in internal service
-	var ctx = icontextutil.NewContextWithGin(c)
+	var ctx = contextutil.NewContextWithGin(c)
 
 	// search data
 	total, data, err := cls.example.ListBySimpleCondition(ctx, field4, body.Page, body.Size)

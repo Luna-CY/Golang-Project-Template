@@ -1,23 +1,23 @@
 package task
 
 import (
-	"github.com/Luna-CY/Golang-Project-Template/internal/icontext"
-	"github.com/Luna-CY/Golang-Project-Template/internal/icontext/icontextutil"
-	"github.com/Luna-CY/Golang-Project-Template/internal/ierror"
+	"github.com/Luna-CY/Golang-Project-Template/internal/context"
+	"github.com/Luna-CY/Golang-Project-Template/internal/context/contextutil"
+	"github.com/Luna-CY/Golang-Project-Template/internal/errors"
 	"github.com/Luna-CY/Golang-Project-Template/internal/logger"
 	gonanoid "github.com/matoous/go-nanoid"
 	"sync/atomic"
 	"time"
 )
 
-func (cls *Task) StartOneTimeTask(ctx icontext.Context, tag string, values map[string]any, caller func(ctx icontext.Context, values map[string]any, progress func(int64)) error, timeout time.Duration, unique bool) (string, error) {
+func (cls *Task) StartOneTimeTask(ctx context.Context, tag string, values map[string]any, caller func(ctx context.Context, values map[string]any, progress func(int64)) error, timeout time.Duration, unique bool) (string, error) {
 	cls.mutex.Lock()
 	defer cls.mutex.Unlock()
 
 	if unique {
 		for id, task := range cls.tasks {
 			if task.tag == tag && 1 == atomic.LoadInt32(&task.processing) {
-				return "", ierror.New("type %s only one can be executed at the same time, current running task id: %s", tag, id)
+				return "", errors.New("type %s only one can be executed at the same time, current running task id: %s", tag, id)
 			}
 		}
 	}
@@ -58,7 +58,7 @@ func (cls *Task) run(task *oneTimeTask) {
 		atomic.StoreInt32(&task.processing, 0)
 	}()
 
-	var ctx, cancel = icontextutil.NewContextWithTimeout(task.ctx, task.timeout)
+	var ctx, cancel = contextutil.NewContextWithTimeout(task.ctx, task.timeout)
 	defer cancel()
 
 	task.error = task.caller(ctx, task.values, func(progress int64) {

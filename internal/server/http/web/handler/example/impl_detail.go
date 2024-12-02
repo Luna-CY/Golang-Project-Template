@@ -1,9 +1,8 @@
 package example
 
 import (
-	"errors"
-	"github.com/Luna-CY/Golang-Project-Template/internal/icontext/icontextutil"
-	"github.com/Luna-CY/Golang-Project-Template/internal/ierror"
+	"github.com/Luna-CY/Golang-Project-Template/internal/context/contextutil"
+	"github.com/Luna-CY/Golang-Project-Template/internal/errors"
 	"github.com/Luna-CY/Golang-Project-Template/internal/server/http/request"
 	"github.com/Luna-CY/Golang-Project-Template/internal/server/http/response"
 	"github.com/Luna-CY/Golang-Project-Template/internal/util/pointer"
@@ -36,11 +35,11 @@ func (cls *Example) Detail(c *gin.Context) (response.Code, any, error) {
 		return response.InvalidParams, nil, err
 	}
 
-	var ctx = icontextutil.NewContextWithGin(c)
+	var ctx = contextutil.NewContextWithGin(c)
 	data, err := cls.example.GetExampleById(ctx, body.Id, false)
 	if nil != err {
-		if errors.Is(err, ierror.ErrorRecordNotFound) {
-			return response.InvalidParams, nil, ierror.New("example record not found: %d", body.Id)
+		if errors.Is(err, errors.ErrorRecordNotFound) {
+			return response.InvalidParams, nil, errors.New("example record not found: %d", body.Id)
 		}
 
 		return response.ServerInternalError, nil, err

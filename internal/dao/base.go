@@ -3,9 +3,9 @@ package dao
 import (
 	"fmt"
 	"github.com/Luna-CY/Golang-Project-Template/internal/configuration"
-	"github.com/Luna-CY/Golang-Project-Template/internal/icontext"
-	"github.com/Luna-CY/Golang-Project-Template/internal/icontext/icontextutil"
-	"github.com/Luna-CY/Golang-Project-Template/internal/ierror"
+	"github.com/Luna-CY/Golang-Project-Template/internal/context"
+	"github.com/Luna-CY/Golang-Project-Template/internal/context/contextutil"
+	"github.com/Luna-CY/Golang-Project-Template/internal/errors"
 	"github.com/Luna-CY/Golang-Project-Template/internal/interface/transactional"
 	"github.com/Luna-CY/Golang-Project-Template/internal/logger"
 	transactional2 "github.com/Luna-CY/Golang-Project-Template/internal/transactional"
@@ -26,16 +26,16 @@ func New() *BaseDao {
 
 type BaseDao struct{}
 
-func (cls *BaseDao) GetDb(ctx icontext.Context) *gorm.DB {
-	if transaction, ok := icontextutil.GetTransactional(ctx); ok {
+func (cls *BaseDao) GetDb(ctx context.Context) *gorm.DB {
+	if transaction, ok := contextutil.GetTransactional(ctx); ok {
 		return transaction.Session()
 	}
 
 	return cls.mysql(ctx).WithContext(ctx)
 }
 
-func (cls *BaseDao) BeginTransaction(ctx icontext.Context) (transactional.Transactional, error) {
-	trans, ok := icontextutil.GetTransactional(ctx)
+func (cls *BaseDao) BeginTransaction(ctx context.Context) (transactional.Transactional, error) {
+	trans, ok := contextutil.GetTransactional(ctx)
 	if ok {
 		return trans, nil
 	}
@@ -44,13 +44,13 @@ func (cls *BaseDao) BeginTransaction(ctx icontext.Context) (transactional.Transa
 	if nil != db.Error {
 		logger.SugarLogger(ctx).Errorf("I.D.BaseDao.BeginTransaction start transaction error: %v", db.Error)
 
-		return nil, ierror.New("start transaction error: %v", db.Error)
+		return nil, errors.New("start transaction error: %v", db.Error)
 	}
 
 	return transactional2.New(db), nil
 }
 
-func (cls *BaseDao) mysql(ctx icontext.Context) *gorm.DB {
+func (cls *BaseDao) mysql(ctx context.Context) *gorm.DB {
 	mo.Do(func() {
 		var config gorm.Config
 		config.DisableAutomaticPing = false

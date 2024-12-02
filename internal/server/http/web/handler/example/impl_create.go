@@ -1,7 +1,7 @@
 package example
 
 import (
-	"github.com/Luna-CY/Golang-Project-Template/internal/icontext/icontextutil"
+	"github.com/Luna-CY/Golang-Project-Template/internal/context/contextutil"
 	"github.com/Luna-CY/Golang-Project-Template/internal/server/http/request"
 	"github.com/Luna-CY/Golang-Project-Template/internal/server/http/response"
 	"github.com/Luna-CY/Golang-Project-Template/model"
@@ -27,7 +27,7 @@ func (cls *Example) Create(c *gin.Context) (response.Code, any, error) {
 		return response.InvalidParams, nil, err
 	}
 
-	var ctx = icontextutil.NewContextWithGin(c)
+	var ctx = contextutil.NewContextWithGin(c)
 	if _, err := cls.example.CreateExample(ctx, body.Field1, body.Field2, body.Field3, model.ExampleEnumFieldType(body.Field4)); nil != err {
 		return response.ServerInternalError, nil, err
 	}

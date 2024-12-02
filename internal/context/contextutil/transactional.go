@@ -1,15 +1,15 @@
-package icontextutil
+package contextutil
 
 import (
-	"github.com/Luna-CY/Golang-Project-Template/internal/icontext"
+	"github.com/Luna-CY/Golang-Project-Template/internal/context"
 	"github.com/Luna-CY/Golang-Project-Template/internal/interface/transactional"
 )
 
-func CheckOnTransactional(ctx icontext.Context) bool {
+func CheckOnTransactional(ctx context.Context) bool {
 	return ctx.Value("transactional") != nil
 }
 
-func GetTransactional(ctx icontext.Context) (transactional.Transactional, bool) {
+func GetTransactional(ctx context.Context) (transactional.Transactional, bool) {
 	if !CheckOnTransactional(ctx) {
 		return nil, false
 	}
@@ -17,6 +17,6 @@ func GetTransactional(ctx icontext.Context) (transactional.Transactional, bool) 
 	return ctx.Value("transactional").(transactional.Transactional), true
 }
 
-func SetTransactional(ctx icontext.Context, transactional transactional.Transactional) icontext.Context {
+func SetTransactional(ctx context.Context, transactional transactional.Transactional) context.Context {
 	return NewContextWithValue(ctx, "transactional", transactional)
 }

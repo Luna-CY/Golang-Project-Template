@@ -1,7 +1,7 @@
 package i18n
 
 import (
-	"github.com/Luna-CY/Golang-Project-Template/internal/icontext"
+	"github.com/Luna-CY/Golang-Project-Template/internal/context"
 	"github.com/Luna-CY/Golang-Project-Template/internal/language"
 	"github.com/Luna-CY/Golang-Project-Template/internal/logger"
 	"strings"
@@ -18,7 +18,7 @@ type Localize struct {
 }
 
 // Localize 本地化
-func (cls Localize) Localize(ctx icontext.Context) string {
+func (cls Localize) Localize(ctx context.Context) string {
 	var lang = string(GetAcceptLanguage(ctx))
 
 	messages, ok := languages[lang]
@@ -52,7 +52,7 @@ func (cls Localize) Localize(ctx icontext.Context) string {
 	return buffer.String()
 }
 
-func GetAcceptLanguage(ctx icontext.Context) language.Language {
+func GetAcceptLanguage(ctx context.Context) language.Language {
 	var value = ctx.Value("accept-language")
 	if nil != value {
 		return value.(language.Language)

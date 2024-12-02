@@ -1,8 +1,8 @@
 package transactional
 
-import "github.com/Luna-CY/Golang-Project-Template/internal/icontext"
+import "github.com/Luna-CY/Golang-Project-Template/internal/context"
 
-func (cls *Transactional) Rollback(ctx icontext.Context) error {
+func (cls *Transactional) Rollback(ctx context.Context) error {
 	cls.mutex.Lock()
 	defer cls.mutex.Unlock()
 

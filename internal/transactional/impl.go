@@ -1,7 +1,7 @@
 package transactional
 
 import (
-	"github.com/Luna-CY/Golang-Project-Template/internal/icontext"
+	"github.com/Luna-CY/Golang-Project-Template/internal/context"
 	"gorm.io/gorm"
 	"sync"
 )
@@ -18,6 +18,6 @@ type Transactional struct {
 	mutex sync.Mutex
 	flag  bool
 
-	rollbackHooks []func(ctx icontext.Context)
-	commitHooks   []func(ctx icontext.Context)
+	rollbackHooks []func(ctx context.Context)
+	commitHooks   []func(ctx context.Context)
 }

@@ -1,11 +1,11 @@
 package timer
 
 import (
-	"github.com/Luna-CY/Golang-Project-Template/internal/icontext"
+	"github.com/Luna-CY/Golang-Project-Template/internal/context"
 	"time"
 )
 
-func NewMinuteTicker(ctx icontext.Context, f func(ctx icontext.Context, ticker *time.Ticker, now time.Time)) {
+func NewMinuteTicker(ctx context.Context, f func(ctx context.Context, ticker *time.Ticker, now time.Time)) {
 	var ticker = time.NewTicker(time.Second)
 	defer ticker.Stop()
 

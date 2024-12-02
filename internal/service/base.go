@@ -1,8 +1,8 @@
 package service
 
 import (
-	"github.com/Luna-CY/Golang-Project-Template/internal/icontext"
-	"github.com/Luna-CY/Golang-Project-Template/internal/icontext/icontextutil"
+	"github.com/Luna-CY/Golang-Project-Template/internal/context"
+	"github.com/Luna-CY/Golang-Project-Template/internal/context/contextutil"
 	"github.com/Luna-CY/Golang-Project-Template/internal/interface/dao"
 	"github.com/Luna-CY/Golang-Project-Template/internal/interface/transactional"
 	"github.com/Luna-CY/Golang-Project-Template/internal/logger"
@@ -18,10 +18,10 @@ type BaseService struct {
 	transactional dao.Transactional
 }
 
-func (cls *BaseService) WithTransaction(ctx icontext.Context, call func(ctx icontext.Context) error) (err error) {
+func (cls *BaseService) WithTransaction(ctx context.Context, call func(ctx context.Context) error) (err error) {
 	var transaction transactional.Transactional
 
-	if !icontextutil.CheckOnTransactional(ctx) {
+	if !contextutil.CheckOnTransactional(ctx) {
 		transaction, err = cls.transactional.BeginTransaction(ctx)
 		if nil != err {
 			return err
@@ -33,7 +33,7 @@ func (cls *BaseService) WithTransaction(ctx icontext.Context, call func(ctx icon
 			}
 		}()
 
-		ctx = icontextutil.SetTransactional(ctx, transaction)
+		ctx = contextutil.SetTransactional(ctx, transaction)
 	}
 
 	if err := call(ctx); nil != err {

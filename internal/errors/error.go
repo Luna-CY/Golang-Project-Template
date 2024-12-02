@@ -1,10 +1,10 @@
-package ierror
+package errors
 
 import (
 	"errors"
 	"fmt"
+	"github.com/Luna-CY/Golang-Project-Template/internal/context"
 	"github.com/Luna-CY/Golang-Project-Template/internal/i18n"
-	"github.com/Luna-CY/Golang-Project-Template/internal/icontext"
 )
 
 var ErrorRecordNotFound = I18n("common-record-not-found")
@@ -51,6 +51,14 @@ func (e *Error) Is(target error) bool {
 	return e.Error() == target.Error()
 }
 
-func (e *Error) I18n(ctx icontext.Context) string {
+func (e *Error) I18n(ctx context.Context) string {
 	return i18n.New(e.id, e.params).Localize(ctx)
+}
+
+func Is(err error, target error) bool {
+	return errors.Is(err, target)
+}
+
+func As(err error, target any) bool {
+	return errors.As(err, &target)
 }

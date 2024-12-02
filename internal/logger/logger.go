@@ -1,11 +1,11 @@
 package logger
 
 import (
-	"github.com/Luna-CY/Golang-Project-Template/internal/icontext"
-	"github.com/Luna-CY/Golang-Project-Template/internal/icontext/icontextutil"
+	"github.com/Luna-CY/Golang-Project-Template/internal/context"
+	"github.com/Luna-CY/Golang-Project-Template/internal/context/contextutil"
 	"go.uber.org/zap"
 )
 
-func SugarLogger(ctx icontext.Context) *zap.SugaredLogger {
-	return logger.Sugar().With("request_id", icontextutil.GetRequestId(ctx))
+func SugarLogger(ctx context.Context) *zap.SugaredLogger {
+	return logger.Sugar().With("request_id", contextutil.GetRequestId(ctx))
 }

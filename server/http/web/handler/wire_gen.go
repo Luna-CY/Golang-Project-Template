@@ -8,8 +8,8 @@ package handler
 
 import (
 	example2 "github.com/Luna-CY/Golang-Project-Template/internal/dao/example"
-	"github.com/Luna-CY/Golang-Project-Template/internal/server/http/web/handler/example"
 	example3 "github.com/Luna-CY/Golang-Project-Template/internal/service/example"
+	"github.com/Luna-CY/Golang-Project-Template/server/http/web/handler/example"
 )
 
 // Injectors from wire.go:
@@ -17,6 +17,6 @@ import (
 func NewExample() *example.Example {
 	exampleExample := example2.New()
 	example4 := example3.New(exampleExample)
-	example5 := example.New(example4)
+	example5 := example4.New(example4)
 	return example5
 }

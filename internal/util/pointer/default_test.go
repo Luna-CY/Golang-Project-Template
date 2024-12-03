@@ -3,7 +3,7 @@ package pointer
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/Luna-CY/Golang-Project-Template/internal/server/http/response"
+	"github.com/Luna-CY/Golang-Project-Template/server/http/response"
 	"testing"
 )
 

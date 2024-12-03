@@ -3,15 +3,15 @@ package router
 import (
 	"github.com/Luna-CY/Golang-Project-Template/internal/context/contextutil"
 	"github.com/Luna-CY/Golang-Project-Template/internal/errors"
-	"github.com/Luna-CY/Golang-Project-Template/internal/server/http/response"
+	response2 "github.com/Luna-CY/Golang-Project-Template/server/http/response"
 	"github.com/gin-gonic/gin"
 	"net/http"
 )
 
-func Wrapper(handler func(*gin.Context) (response.Code, any, error)) gin.HandlerFunc {
+func Wrapper(handler func(*gin.Context) (response2.Code, any, error)) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		var code, res, err = handler(c)
-		if response.Ok != code || nil != err {
+		if response2.Ok != code || nil != err {
 			var message = err.Error()
 
 			var ie *errors.Error
@@ -20,22 +20,22 @@ func Wrapper(handler func(*gin.Context) (response.Code, any, error)) gin.Handler
 			}
 
 			if nil != res {
-				response.FailureWithData(c, code, message, res)
+				response2.FailureWithData(c, code, message, res)
 
 				return
 			}
 
-			response.Failure(c, code, message)
+			response2.Failure(c, code, message)
 
 			return
 		}
 
-		if redirect, ok := res.(response.Redirect); ok {
+		if redirect, ok := res.(response2.Redirect); ok {
 			c.Redirect(http.StatusFound, redirect.To)
 
 			return
 		}
 
-		response.Success(c, res)
+		response2.Success(c, res)
 	}
 }

@@ -2,9 +2,9 @@ package example
 
 import (
 	"github.com/Luna-CY/Golang-Project-Template/internal/context/contextutil"
-	"github.com/Luna-CY/Golang-Project-Template/internal/server/http/request"
-	"github.com/Luna-CY/Golang-Project-Template/internal/server/http/response"
 	"github.com/Luna-CY/Golang-Project-Template/model"
+	"github.com/Luna-CY/Golang-Project-Template/server/http/request"
+	"github.com/Luna-CY/Golang-Project-Template/server/http/response"
 	"github.com/gin-gonic/gin"
 )
 

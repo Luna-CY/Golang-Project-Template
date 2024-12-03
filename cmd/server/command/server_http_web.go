@@ -5,8 +5,8 @@ import (
 	"errors"
 	"fmt"
 	"github.com/Luna-CY/Golang-Project-Template/internal/configuration"
-	"github.com/Luna-CY/Golang-Project-Template/internal/server/http/middleware"
-	"github.com/Luna-CY/Golang-Project-Template/internal/server/http/web"
+	middleware2 "github.com/Luna-CY/Golang-Project-Template/server/http/middleware"
+	"github.com/Luna-CY/Golang-Project-Template/server/http/web"
 	"github.com/gin-gonic/gin"
 	"github.com/spf13/cobra"
 	"net/http"
@@ -22,7 +22,7 @@ func NewHttpWebCommand() *cobra.Command {
 			var engine = gin.New()
 
 			// register common middleware
-			engine.Use(middleware.CustomGinRecovery(), middleware.RequestId())
+			engine.Use(middleware2.CustomGinRecovery(), middleware2.RequestId())
 
 			if err := engine.SetTrustedProxies(configuration.Configuration.Server.Http.Web.GinTrustedProxies); nil != err {
 				cmd.PrintErrf("error setting trusted proxies: %v\n", err)
@@ -40,7 +40,7 @@ func NewHttpWebCommand() *cobra.Command {
 
 			// register under maintenance middleware if enabled in configuration.Configuration.Server.Http.Web.UnderMaintenance
 			if configuration.Configuration.Server.Http.Web.UnderMaintenance {
-				engine.Use(middleware.UnderMaintenance())
+				engine.Use(middleware2.UnderMaintenance())
 			}
 
 			// set listening address if not set in configuration.Configuration.Server.Http.Web.Listen, default to ":8000"

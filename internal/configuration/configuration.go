@@ -8,7 +8,7 @@ var Configuration struct {
 		MaxSize    int      `mapstructure:"max_size"`    // max log file size, in MB
 		MaxAge     int      `mapstructure:"max_age"`     // max log file age, in days
 		MaxBackups int      `mapstructure:"max_backups"` // max log file backups
-	} `mapstructure:"-"` // Logger configuration
+	} `mapstructure:"logger"` // Logger configuration
 	Database struct {
 		Mysql struct {
 			Dsn      string `mapstructure:"dsn"` // DSN connection string

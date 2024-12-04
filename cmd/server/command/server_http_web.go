@@ -10,6 +10,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/spf13/cobra"
 	"net/http"
+	"os"
 	"time"
 )
 
@@ -27,7 +28,7 @@ func NewHttpWebCommand() *cobra.Command {
 			if err := engine.SetTrustedProxies(configuration.Configuration.Server.Http.Web.GinTrustedProxies); nil != err {
 				cmd.PrintErrf("error setting trusted proxies: %v\n", err)
 
-				return
+				os.Exit(1)
 			}
 
 			if configuration.Configuration.Debug {
@@ -60,6 +61,8 @@ func NewHttpWebCommand() *cobra.Command {
 				if err := server.ListenAndServe(); nil != err {
 					if !errors.Is(err, http.ErrServerClosed) {
 						cmd.PrintErrf("error starting server: %v\n", err)
+
+						os.Exit(1)
 					}
 				}
 			}()

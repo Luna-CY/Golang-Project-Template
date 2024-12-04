@@ -23,6 +23,12 @@ func main() {
 
 	// Register signal handlers
 	signal.Notify(ch, os.Interrupt, syscall.SIGUSR1)
+	go func() {
+		<-ch
+
+		// Handle interrupt signal by canceling the context and exiting the program
+		cancel()
+	}()
 
 	wg.Add(1)
 	go func() {
@@ -35,11 +41,9 @@ func main() {
 		}
 	}()
 
-	<-ch
-
-	// Handle interrupt signal by canceling the context and exiting the program
-	cancel()
-
 	// Wait for the main command to finish
 	wg.Wait()
+
+	// cancel the context to stop the server gracefully
+	cancel()
 }

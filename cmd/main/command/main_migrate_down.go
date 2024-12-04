@@ -86,7 +86,7 @@ func NewMigrateDownCommand() *cobra.Command {
 	}
 
 	command.Flags().StringVarP(&path, "path", "p", "./migration", "Path to the migration directory. default:./migration")
-	command.Flags().IntVarP(&number, "number", "n", 1, "Apply migrations down to the specified version. default: apply the previous version")
+	command.Flags().IntVarP(&number, "number", "n", 0, "Apply migrations down to the specified version. default: apply the previous version")
 	command.Flags().BoolVarP(&force, "force", "f", false, "Force apply all migration. default: false")
 
 	return command

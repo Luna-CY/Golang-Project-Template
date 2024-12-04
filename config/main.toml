@@ -8,7 +8,7 @@ max_age = 30
 max_backups = 10
 
 [database.mysql]
-dns = "user:password@tcp(127.0.0.1:3306)/database?charset=utf8mb4&loc=Local&multiStatements=true" # environment special config
+dsn = "user:password@tcp(127.0.0.1:3306)/database?charset=utf8mb4&loc=Local&multiStatements=true" # environment special config
 conn_pool = { enable = true, max_idle_conn = 10, max_open_conn = 100, max_idle_life_time = 60 }
 
 [cache]

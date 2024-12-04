@@ -15,4 +15,4 @@ conn_pool = { enable = true, max_idle_conn = 10, max_open_conn = 100, max_idle_l
 prefix = ""
 
 [server.http]
-web = { listen = "8000", trusted_proxies = [], under_maintenance = false }
+web = { listen = ":8000", trusted_proxies = [], under_maintenance = false }

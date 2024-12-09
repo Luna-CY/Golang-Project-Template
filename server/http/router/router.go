@@ -14,9 +14,8 @@ func Wrapper(handler func(*gin.Context) (response.Code, any, error)) gin.Handler
 		if response.Ok != code || nil != err {
 			var message = err.Error()
 
-			var ie *errors.Error
-			if errors.As(err, ie) {
-				message = err.(*errors.Error).I18n(contextutil.NewContextWithGin(c))
+			if ie, ok := err.(*errors.Error); ok {
+				message = ie.I18n(contextutil.NewContextWithGin(c))
 			}
 
 			if nil != res {

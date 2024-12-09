@@ -20,7 +20,13 @@ func Default[T any](v T) T {
 		var cv = reflect.New(vt).Elem()
 
 		for i := 0; i < cv.NumField(); i++ {
-			cv.Field(i).Set(reflect.ValueOf(Default(vv.Field(i).Interface())))
+			var cvf = cv.Field(i)
+
+			if reflect.Ptr == cvf.Kind() && cvf.IsZero() {
+				continue
+			}
+
+			cvf.Set(reflect.ValueOf(Default(vv.Field(i).Interface())))
 		}
 
 		return cv.Interface().(T)

@@ -17,6 +17,6 @@ import (
 func NewExample() *example.Example {
 	exampleExample := example2.New()
 	example4 := example3.New(exampleExample)
-	example5 := example4.New(example4)
+	example5 := example.New(example4)
 	return example5
 }

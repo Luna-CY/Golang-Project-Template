@@ -1,6 +1,6 @@
 .PHONY: wire
 wire:
-	$$(/usr/bin/which dem) wire github.com/Luna-CY/Golang-Project-Template/internal/server/http/gateway/web/handler
+	$$(/usr/bin/which dem) wire github.com/Luna-CY/Golang-Project-Template/server/http/gateway/web/handler
 
 .PHONY: docs
 docs:

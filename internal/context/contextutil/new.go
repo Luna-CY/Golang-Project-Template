@@ -9,7 +9,7 @@ import (
 )
 
 func NewContext() context.Context {
-	var ctx = context2.WithValue(context2.Background(), "x-request-id", gonanoid.MustID(64))
+	var ctx = context2.WithValue(context2.Background(), "x-request-id", gonanoid.MustID(21))
 
 	return &context.IContext{Context: ctx}
 }

@@ -22,7 +22,7 @@ func (cls *Task) StartOneTimeTask(ctx context.Context, tag string, values map[st
 		}
 	}
 
-	var id = gonanoid.MustID(64)
+	var id = gonanoid.MustID(21)
 
 	cls.tasks[id] = &oneTimeTask{
 		ctx:         ctx,

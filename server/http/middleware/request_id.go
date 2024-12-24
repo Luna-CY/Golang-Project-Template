@@ -7,6 +7,6 @@ import (
 
 func RequestId() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		c.Set("X-Request-ID", gonanoid.MustID(64))
+		c.Set("X-Request-ID", gonanoid.MustID(21))
 	}
 }

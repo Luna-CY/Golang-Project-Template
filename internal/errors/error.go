@@ -52,6 +52,10 @@ func (e *Error) Is(target error) bool {
 }
 
 func (e *Error) I18n(ctx context.Context) string {
+	if "" == e.id {
+		return e.Error()
+	}
+
 	return i18n.New(e.id, e.params).Localize(ctx)
 }
 

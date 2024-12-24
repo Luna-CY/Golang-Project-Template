@@ -445,7 +445,7 @@ var SwaggerInfomain = &swag.Spec{
 	BasePath:         "/api",
 	Schemes:          []string{},
 	Title:            "API Documents",
-	Description:      "<div>\n<h2>特定状态码约定</h2>\n<table class=\"table\">\n<thead>\n<tr><th>code</th><th style=\"width: 100%\">description</th></tr>\n<thead>\n<tbody>\n<tr><td>1100001</td><td>Invalid Parameters</td></tr>\n<tr><td>9999999</td><td>Server Internal Error</td></tr>\n</tbody>\n</table>\n</div>",
+	Description:      "<div>\n<h2>special code define</h2>\n<table class=\"table\">\n<thead>\n<tr><th>code</th><th style=\"width: 100%\">description</th></tr>\n<thead>\n<tbody>\n<tr><td>1100001</td><td>Invalid Parameters</td></tr>\n<tr><td>9999999</td><td>Server Internal Error</td></tr>\n</tbody>\n</table>\n</div>",
 	InfoInstanceName: "main",
 	SwaggerTemplate:  docTemplatemain,
 	LeftDelim:        "{{",

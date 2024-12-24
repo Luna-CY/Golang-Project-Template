@@ -8,7 +8,7 @@ import (
 	"github.com/Luna-CY/Golang-Project-Template/internal/interface/dao"
 	"github.com/Luna-CY/Golang-Project-Template/internal/interface/service"
 	example3 "github.com/Luna-CY/Golang-Project-Template/internal/service/example"
-	"github.com/Luna-CY/Golang-Project-Template/server/http/web/handler/example"
+	"github.com/Luna-CY/Golang-Project-Template/server/http/gateway/web/handler/example"
 	"github.com/google/wire"
 )
 

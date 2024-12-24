@@ -7,7 +7,7 @@
     ],
     "swagger": "2.0",
     "info": {
-        "description": "\u003cdiv\u003e\n\u003ch2\u003e特定状态码约定\u003c/h2\u003e\n\u003ctable class=\"table\"\u003e\n\u003cthead\u003e\n\u003ctr\u003e\u003cth\u003ecode\u003c/th\u003e\u003cth style=\"width: 100%\"\u003edescription\u003c/th\u003e\u003c/tr\u003e\n\u003cthead\u003e\n\u003ctbody\u003e\n\u003ctr\u003e\u003ctd\u003e1100001\u003c/td\u003e\u003ctd\u003eInvalid Parameters\u003c/td\u003e\u003c/tr\u003e\n\u003ctr\u003e\u003ctd\u003e9999999\u003c/td\u003e\u003ctd\u003eServer Internal Error\u003c/td\u003e\u003c/tr\u003e\n\u003c/tbody\u003e\n\u003c/table\u003e\n\u003c/div\u003e",
+        "description": "\u003cdiv\u003e\n\u003ch2\u003especial code define\u003c/h2\u003e\n\u003ctable class=\"table\"\u003e\n\u003cthead\u003e\n\u003ctr\u003e\u003cth\u003ecode\u003c/th\u003e\u003cth style=\"width: 100%\"\u003edescription\u003c/th\u003e\u003c/tr\u003e\n\u003cthead\u003e\n\u003ctbody\u003e\n\u003ctr\u003e\u003ctd\u003e1100001\u003c/td\u003e\u003ctd\u003eInvalid Parameters\u003c/td\u003e\u003c/tr\u003e\n\u003ctr\u003e\u003ctd\u003e9999999\u003c/td\u003e\u003ctd\u003eServer Internal Error\u003c/td\u003e\u003c/tr\u003e\n\u003c/tbody\u003e\n\u003c/table\u003e\n\u003c/div\u003e",
         "title": "API Documents",
         "contact": {},
         "version": "1.0"

@@ -29,7 +29,7 @@ func NewMainCommand() *cobra.Command {
 	}
 
 	// Add subcommands here
-	command.AddCommand(NewMigrateCommand(), NewServerCommand())
+	command.AddCommand(NewMigrateCommand(), NewServerCommand(), NewGenerateCommand())
 
 	return command
 }

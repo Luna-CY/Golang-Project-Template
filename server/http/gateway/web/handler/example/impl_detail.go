@@ -29,20 +29,20 @@ type DetailResponse struct {
 // @Param param body DetailRequest true "request body"
 // @Success 200 {object} response.Response{data=DetailResponse{}} "successful. click to expand response structure"
 // @Router /example/detail [post]
-func (cls *Example) Detail(c *gin.Context) (response.Code, any, error) {
+func (cls *Example) Detail(c *gin.Context) (response.Code, any, errors.Error) {
 	var body = DetailRequest{}
 	if err := request.ShouldBindJSON(c, &body); nil != err {
-		return response.InvalidParams, nil, err
+		return response.InvalidParams, nil, err.Relation(errors.ErrorServerInvalidRequest("SHGWHE.E_LE.D_IL.35"))
 	}
 
 	var ctx = contextutil.NewContextWithGin(c)
 	data, err := cls.example.GetExampleById(ctx, body.Id, false)
 	if nil != err {
-		if errors.Is(err, errors.ErrorRecordNotFound) {
-			return response.InvalidParams, nil, errors.New("example record not found: %d", body.Id)
+		if err.IsType(errors.ErrorTypeRecordNotFound) {
+			return response.InvalidParams, nil, err.Relation(errors.New(errors.ErrorTypeInvalidRequest, "SHGWHE.E_LE.D_IL.42", "example record not found: %d", body.Id))
 		}
 
-		return response.ServerInternalError, nil, err
+		return response.ServerInternalError, nil, err.Relation(errors.ErrorServerInternalError("SHGWHE.E_LE.D_IL.45"))
 	}
 
 	var res = pointer.Default(DetailResponse{

@@ -10,14 +10,14 @@ import (
 	"time"
 )
 
-func (cls *Task) StartOneTimeTask(ctx context.Context, tag string, values map[string]any, caller func(ctx context.Context, values map[string]any, progress func(int64)) error, timeout time.Duration, unique bool) (string, error) {
+func (cls *Task) StartOneTimeTask(ctx context.Context, tag string, values map[string]any, caller func(ctx context.Context, values map[string]any, progress func(int64)) errors.Error, timeout time.Duration, unique bool) (string, errors.Error) {
 	cls.mutex.Lock()
 	defer cls.mutex.Unlock()
 
 	if unique {
 		for id, task := range cls.tasks {
 			if task.tag == tag && 1 == atomic.LoadInt32(&task.processing) {
-				return "", errors.New("type %s only one can be executed at the same time, current running task id: %s", tag, id)
+				return "", errors.New(errors.ErrorTypeServerInternalError, "IS.T_SK.SOTT_SK.20", "type %s only one can be executed at the same time, current running task id: %s", tag, id)
 			}
 		}
 	}

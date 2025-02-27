@@ -1,14 +1,15 @@
 package request
 
 import (
+	"github.com/Luna-CY/Golang-Project-Template/internal/errors"
 	"github.com/gin-gonic/gin"
 	"reflect"
 	"strings"
 )
 
-type Handler func(dst any) error
+type Handler func(dst any) errors.Error
 
-func BindHandlerTrimSliceEmptyValue(dst any) error {
+func BindHandlerTrimSliceEmptyValue(dst any) errors.Error {
 	var rv = reflect.ValueOf(dst)
 
 	if rv.Kind() == reflect.Ptr {
@@ -19,7 +20,7 @@ func BindHandlerTrimSliceEmptyValue(dst any) error {
 	case reflect.Struct:
 		for i := 0; i < rv.NumField(); i++ {
 			if err := BindHandlerTrimSliceEmptyValue(rv.Field(i).Addr().Interface()); nil != err {
-				return err
+				return err.Relation(errors.ErrorServerInternalError("SHR.BHTSEV_UE.23"))
 			}
 		}
 	case reflect.Slice:
@@ -44,43 +45,43 @@ func BindHandlerTrimSliceEmptyValue(dst any) error {
 	return nil
 }
 
-func ShouldBindJSON(c *gin.Context, dst any, handlers ...Handler) error {
+func ShouldBindJSON(c *gin.Context, dst any, handlers ...Handler) errors.Error {
 	if err := c.ShouldBindJSON(dst); nil != err {
-		return err
+		return errors.New(errors.ErrorTypeInvalidRequest, "SHR.SBJ_ON.50", err)
 	}
 
 	if err := trimStringSpace(dst); nil != err {
-		return err
+		return err.Relation(errors.ErrorServerInternalError("SHR.SBJ_ON.54"))
 	}
 
 	for _, handler := range handlers {
 		if err := handler(dst); nil != err {
-			return err
+			return err.Relation(errors.ErrorServerInternalError("SHR.SBJ_ON.59"))
 		}
 	}
 
 	return nil
 }
 
-func ShouldBindForm(c *gin.Context, dst any, handlers ...Handler) error {
+func ShouldBindForm(c *gin.Context, dst any, handlers ...Handler) errors.Error {
 	if err := c.ShouldBind(dst); nil != err {
-		return err
+		return errors.New(errors.ErrorTypeInvalidRequest, "SHR.SBF_RM.68", err)
 	}
 
 	if err := trimStringSpace(dst); nil != err {
-		return err
+		return err.Relation(errors.ErrorServerInternalError("SHR.SBF_RM.72"))
 	}
 
 	for _, handler := range handlers {
 		if err := handler(dst); nil != err {
-			return err
+			return err.Relation(errors.ErrorServerInternalError("SHR.SBF_RM.77"))
 		}
 	}
 
 	return nil
 }
 
-func trimStringSpace(v any) error {
+func trimStringSpace(v any) errors.Error {
 	var rv = reflect.ValueOf(v)
 
 	if rv.Kind() == reflect.Ptr {
@@ -100,7 +101,7 @@ func trimStringSpace(v any) error {
 			}
 
 			if err := trimStringSpace(field.Addr().Interface()); nil != err {
-				return err
+				return err.Relation(errors.ErrorServerInternalError("SHR.TSS_CE.104"))
 			}
 		}
 	case reflect.Slice:
@@ -134,7 +135,7 @@ func trimStringSpace(v any) error {
 				rv.SetMapIndex(key, reflect.ValueOf(strings.TrimSpace(value.String())))
 			case reflect.Struct, reflect.Slice, reflect.Map:
 				if err := trimStringSpace(value.Interface()); nil != err {
-					return err
+					return err.Relation(errors.ErrorServerInternalError("SHR.TSS_CE.138"))
 				}
 			default:
 				// 其他类型不处理

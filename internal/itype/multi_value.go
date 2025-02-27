@@ -37,7 +37,7 @@ func (cls *MultiValues[T]) Scan(value any) error {
 		return nil
 	}
 
-	return errors.New("invalid values")
+	return errors.New(errors.ErrorTypeServerInternalError, "invalid values")
 }
 
 func (cls *MultiValues[T]) Value() (driver.Value, error) {

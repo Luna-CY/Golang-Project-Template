@@ -2,6 +2,7 @@ package example
 
 import (
 	"github.com/Luna-CY/Golang-Project-Template/internal/context/contextutil"
+	"github.com/Luna-CY/Golang-Project-Template/internal/errors"
 	"github.com/Luna-CY/Golang-Project-Template/model"
 	"github.com/Luna-CY/Golang-Project-Template/server/http/request"
 	"github.com/Luna-CY/Golang-Project-Template/server/http/response"
@@ -21,15 +22,15 @@ type CreateRequest struct {
 // @Param param body CreateRequest true "request body"
 // @Success 200 {object} response.Response{} "successful. click to expand response structure"
 // @Router /example/create [post]
-func (cls *Example) Create(c *gin.Context) (response.Code, any, error) {
+func (cls *Example) Create(c *gin.Context) (response.Code, any, errors.Error) {
 	var body = CreateRequest{}
 	if err := request.ShouldBindJSON(c, &body); nil != err {
-		return response.InvalidParams, nil, err
+		return response.InvalidParams, nil, err.Relation(errors.ErrorServerInvalidRequest("SHGWHE.E_LE.C_TE.28"))
 	}
 
 	var ctx = contextutil.NewContextWithGin(c)
 	if _, err := cls.example.CreateExample(ctx, body.Field1, body.Field2, body.Field3, model.ExampleEnumFieldType(body.Field4)); nil != err {
-		return response.ServerInternalError, nil, err
+		return response.ServerInternalError, nil, err.Relation(errors.ErrorServerInternalError("SHGWHE.E_LE.C_TE.33"))
 	}
 
 	return response.Ok, nil, nil

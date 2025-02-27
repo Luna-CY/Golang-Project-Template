@@ -1,9 +1,12 @@
 package retry
 
-import "time"
+import (
+	"github.com/Luna-CY/Golang-Project-Template/internal/errors"
+	"time"
+)
 
-func MaxRetry(max int, internal time.Duration, f func() error) error {
-	var err error
+func MaxRetry(max int, internal time.Duration, f func() errors.Error) errors.Error {
+	var err errors.Error
 
 	for i := 0; i < max; i++ {
 		err = f()

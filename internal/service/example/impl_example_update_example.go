@@ -9,11 +9,11 @@ import (
 	"runtime/debug"
 )
 
-func (cls *Example) UpdateExample(ctx context.Context, example *model.Example, field1 *string, field2 *uint64, field3 *bool, field4 *model.ExampleEnumFieldType) error {
+func (cls *Example) UpdateExample(ctx context.Context, example *model.Example, field1 *string, field2 *uint64, field3 *bool, field4 *model.ExampleEnumFieldType) errors.Error {
 	if nil == example {
 		logger.SugarLogger(ctx).Errorf("I.S.Example.UpdateExample: example is nil stack %s", string(debug.Stack()))
 
-		return errors.ErrorServerInternalError
+		return errors.ErrorServerInternalError("IS.E_LE.UE_LE.16")
 	}
 
 	example.Field1 = pointer.Or(field1, example.Field1)
@@ -21,5 +21,9 @@ func (cls *Example) UpdateExample(ctx context.Context, example *model.Example, f
 	example.Field3 = pointer.Or(field3, example.Field3)
 	example.Field4 = pointer.Or(field4, example.Field4)
 
-	return cls.example.SaveExample(ctx, example)
+	if err := cls.example.SaveExample(ctx, example); nil != err {
+		return err.Relation(errors.ErrorServerInternalError("IS.E_LE.UE_LE.25"))
+	}
+
+	return nil
 }

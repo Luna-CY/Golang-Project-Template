@@ -2,7 +2,6 @@ package command
 
 import (
 	"fmt"
-	"github.com/Luna-CY/Golang-Project-Template/internal/errors"
 	"github.com/Luna-CY/Golang-Project-Template/internal/util/los"
 	"github.com/spf13/cobra"
 	"go/ast"
@@ -120,7 +119,7 @@ type {{.ModelName}} interface {
 			var tokens = strings.Split(item, "=")
 
 			if 3 > len(tokens) {
-				return errors.New("无效的take-by参数配置: %s，每个选项必须以=号分割三个值：字段名=字段类型=字段零值", item)
+				return fmt.Errorf("无效的take-by参数配置: %s，每个选项必须以=号分割三个值：字段名=字段类型=字段零值", item)
 			}
 
 			var takeByMethodCode = `
@@ -142,7 +141,7 @@ type {{.ModelName}} interface {
 			var tokens = strings.Split(item, "=")
 
 			if 3 > len(tokens) {
-				return errors.New("无效的delete-by参数配置: %s，每个选项必须以=号分割三个值：字段名=字段类型=字段零值", item)
+				return fmt.Errorf("无效的delete-by参数配置: %s，每个选项必须以=号分割三个值：字段名=字段类型=字段零值", item)
 			}
 
 			var deleteByMethodCode = `
@@ -163,7 +162,7 @@ type {{.ModelName}} interface {
 			var tokens = strings.Split(item, "=")
 
 			if 2 > len(tokens) {
-				return errors.New("无效的batch-take-by参数配置: %s，每个选项必须以=号分割两个值：字段名=字段类型", item)
+				return fmt.Errorf("无效的batch-take-by参数配置: %s，每个选项必须以=号分割两个值：字段名=字段类型", item)
 			}
 
 			var batchTakeByMethodCode = `
@@ -181,11 +180,11 @@ type {{.ModelName}} interface {
 
 	path, err := filepath.Abs(filepath.Join("..", "internal", "interface", "dao", fmt.Sprintf("%s.go", strings.ToLower(modelName))))
 	if nil != err {
-		return errors.New("获取绝对路径失败: %s, err: %s", path, err)
+		return fmt.Errorf("获取绝对路径失败: %s, err: %s", path, err)
 	}
 
 	if err := los.WriteToFile(path, content); nil != err {
-		return errors.New("写入文件失败: %s, err: %s", path, err)
+		return fmt.Errorf("写入文件失败: %s, err: %s", path, err)
 	}
 
 	return nil
@@ -377,11 +376,11 @@ func (cls *{{.ModelName}}) BatchTakeBy{{.FieldName}}(ctx context.Context, values
 func GenerateDaoFiles(modelName string, save bool, takeBy []string, deleteBy []string, batchTakeBy []string) error {
 	root, err := filepath.Abs(filepath.Join("..", "internal", "dao", strings.ToLower(modelName)))
 	if nil != err {
-		return errors.New("获取绝对路径失败: %s, err: %s", root, err)
+		return fmt.Errorf("获取绝对路径失败: %s, err: %s", root, err)
 	}
 
 	if err := os.MkdirAll(root, 0755); nil != err {
-		return errors.New("创建文件夹失败: %s, err: %s", root, err)
+		return fmt.Errorf("创建文件夹失败: %s, err: %s", root, err)
 	}
 
 	var kvs = []string{"{{.ModelName}}", modelName, "{{.LowerModelName}}", strings.ToLower(modelName)}
@@ -391,7 +390,7 @@ func GenerateDaoFiles(modelName string, save bool, takeBy []string, deleteBy []s
 		var path = filepath.Join(root, "impl.go")
 
 		if err := los.WriteToFile(path, strings.NewReplacer(kvs...).Replace(implementCode)); nil != err {
-			return errors.New("写入文件失败: %s, err: %s", path, err)
+			return fmt.Errorf("写入文件失败: %s, err: %s", path, err)
 		}
 
 	}
@@ -401,14 +400,14 @@ func GenerateDaoFiles(modelName string, save bool, takeBy []string, deleteBy []s
 		var path = filepath.Join(root, fmt.Sprintf("impl_%s_save_%s.go", strings.ToLower(modelName), strings.ToLower(modelName)))
 
 		if err := los.WriteToFile(path, strings.NewReplacer(kvs...).Replace(saveImplementCode)); nil != err {
-			return errors.New("写入文件失败: %s, err: %s", path, err)
+			return fmt.Errorf("写入文件失败: %s, err: %s", path, err)
 		}
 	}
 
 	for _, item := range takeBy {
 		var tokens = strings.Split(item, "=")
 		if 3 > len(tokens) {
-			return errors.New("无效的take-by参数配置: %s，每个选项必须以=号分割三个值：字段名=字段类型=字段零值", item)
+			return fmt.Errorf("无效的take-by参数配置: %s，每个选项必须以=号分割三个值：字段名=字段类型=字段零值", item)
 		}
 
 		if "" == tokens[2] {
@@ -421,14 +420,14 @@ func GenerateDaoFiles(modelName string, save bool, takeBy []string, deleteBy []s
 		var path = filepath.Join(root, fmt.Sprintf("impl_%s_take_by_%s.go", strings.ToLower(modelName), strings.ToLower(tokens[0])))
 
 		if err := los.WriteToFile(path, strings.NewReplacer(kvs...).Replace(takeByCode)); nil != err {
-			return errors.New("写入文件失败: %s, err: %s", path, err)
+			return fmt.Errorf("写入文件失败: %s, err: %s", path, err)
 		}
 	}
 
 	for _, item := range deleteBy {
 		var tokens = strings.Split(item, "=")
 		if 3 > len(tokens) {
-			return errors.New("无效的delete-by参数配置: %s，每个选项必须以=号分割三个值：字段名=字段类型=字段零值", item)
+			return fmt.Errorf("无效的delete-by参数配置: %s，每个选项必须以=号分割三个值：字段名=字段类型=字段零值", item)
 		}
 
 		if "" == tokens[2] {
@@ -441,14 +440,14 @@ func GenerateDaoFiles(modelName string, save bool, takeBy []string, deleteBy []s
 		var path = filepath.Join(root, fmt.Sprintf("impl_%s_delete_by_%s.go", strings.ToLower(modelName), strings.ToLower(tokens[0])))
 
 		if err := los.WriteToFile(path, strings.NewReplacer(kvs...).Replace(deleteByCode)); nil != err {
-			return errors.New("写入文件失败: %s, err: %s", path, err)
+			return fmt.Errorf("写入文件失败: %s, err: %s", path, err)
 		}
 	}
 
 	for _, item := range batchTakeBy {
 		var tokens = strings.Split(item, "=")
 		if 2 > len(tokens) {
-			return errors.New("无效的batch-take-by参数配置: %s，每个选项必须以=号分割两个值：字段名=字段类型", item)
+			return fmt.Errorf("无效的batch-take-by参数配置: %s，每个选项必须以=号分割两个值：字段名=字段类型", item)
 		}
 
 		var kvs = append(kvs, "{{.FieldName}}", tokens[0], "{{.LowerFieldName}}", strings.ToLower(tokens[0]), "{{.FieldType}}", tokens[1])
@@ -457,7 +456,7 @@ func GenerateDaoFiles(modelName string, save bool, takeBy []string, deleteBy []s
 		var path = filepath.Join(root, fmt.Sprintf("impl_%s_batch_take_by_%s.go", strings.ToLower(modelName), strings.ToLower(tokens[0])))
 
 		if err := los.WriteToFile(path, strings.NewReplacer(kvs...).Replace(batchTakeByCode)); nil != err {
-			return errors.New("写入文件失败: %s, err: %s", path, err)
+			return fmt.Errorf("写入文件失败: %s, err: %s", path, err)
 		}
 	}
 

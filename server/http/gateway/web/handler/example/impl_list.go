@@ -2,6 +2,7 @@ package example
 
 import (
 	"github.com/Luna-CY/Golang-Project-Template/internal/context/contextutil"
+	"github.com/Luna-CY/Golang-Project-Template/internal/errors"
 	"github.com/Luna-CY/Golang-Project-Template/internal/util/pointer"
 	"github.com/Luna-CY/Golang-Project-Template/model"
 	"github.com/Luna-CY/Golang-Project-Template/server/http/request"
@@ -28,10 +29,10 @@ type ListItem struct {
 // @Param param body ListRequest true "request body"
 // @Success 200 {object} response.Response{data=response.BaseDataList[ListItem]{}} "successful. click to expand response structure"
 // @Router /example/list [post]
-func (cls *Example) List(c *gin.Context) (response.Code, any, error) {
+func (cls *Example) List(c *gin.Context) (response.Code, any, errors.Error) {
 	var body = ListRequest{BaseListRequest: request.BaseListRequest{Page: 1, Size: 20}}
 	if err := request.ShouldBindJSON(c, &body); nil != err {
-		return response.InvalidParams, nil, err
+		return response.InvalidParams, nil, err.Relation(errors.ErrorServerInvalidRequest("SHGWHE.E_LE.L_ST.35"))
 	}
 
 	var field4 *model.ExampleEnumFieldType
@@ -46,7 +47,7 @@ func (cls *Example) List(c *gin.Context) (response.Code, any, error) {
 	// search data
 	total, data, err := cls.example.ListBySimpleCondition(ctx, field4, body.Page, body.Size)
 	if nil != err {
-		return response.ServerInternalError, nil, err
+		return response.ServerInternalError, nil, err.Relation(errors.ErrorServerInternalError("SHGWHE.E_LE.L_ST.50"))
 	}
 
 	// response data

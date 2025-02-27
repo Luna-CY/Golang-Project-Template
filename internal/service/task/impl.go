@@ -2,6 +2,7 @@ package task
 
 import (
 	"github.com/Luna-CY/Golang-Project-Template/internal/context"
+	"github.com/Luna-CY/Golang-Project-Template/internal/errors"
 	"sync"
 	"time"
 )
@@ -10,7 +11,7 @@ type oneTimeTask struct {
 	ctx         context.Context
 	tag         string
 	values      map[string]any
-	caller      func(ctx context.Context, values map[string]any, progress func(int64)) error
+	caller      func(ctx context.Context, values map[string]any, progress func(int64)) errors.Error
 	timeout     time.Duration
 	initialized int32
 	processing  int32

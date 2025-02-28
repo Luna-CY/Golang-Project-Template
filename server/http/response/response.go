@@ -22,7 +22,7 @@ type BaseDataList[T any] struct {
 func Success(c *gin.Context, data any) {
 	var response Response
 	response.Code = Ok
-	response.RequestId = c.Request.Header.Get("X-Request-ID")
+	response.RequestId = c.GetString("X-Request-ID")
 	response.Msg = "OK"
 	response.Data = data
 
@@ -32,7 +32,7 @@ func Success(c *gin.Context, data any) {
 func Failure(c *gin.Context, code Code, message string) {
 	var response Response
 	response.Code = code
-	response.RequestId = c.Request.Header.Get("X-Request-ID")
+	response.RequestId = c.GetString("X-Request-ID")
 	response.Msg = message
 
 	c.JSON(http.StatusOK, response)
@@ -41,7 +41,7 @@ func Failure(c *gin.Context, code Code, message string) {
 func FailureWithData(c *gin.Context, code Code, message string, data any) {
 	var response Response
 	response.Code = code
-	response.RequestId = c.Request.Header.Get("X-Request-ID")
+	response.RequestId = c.GetString("X-Request-ID")
 	response.Msg = message
 	response.Data = data
 

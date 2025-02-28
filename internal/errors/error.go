@@ -60,7 +60,7 @@ func (cls *IError) Error() string {
 	if 0 != len(cls.values) {
 		sb.WriteString(fmt.Sprintf("%s: %s", cls.code, fmt.Sprintf(cls.message.(string), cls.values...)))
 	} else {
-		sb.WriteString(fmt.Sprintf("%v", cls.message))
+		sb.WriteString(fmt.Sprintf("%s: %v", cls.code, cls.message))
 	}
 
 	var es []string

@@ -3,7 +3,6 @@ package errors
 import (
 	"github.com/Luna-CY/Golang-Project-Template/internal/context"
 	"github.com/Luna-CY/Golang-Project-Template/internal/i18n"
-	"strings"
 )
 
 func NewI18n(id string, e Error, params ...string) I18nError {
@@ -36,16 +35,7 @@ func (cls *II18nError) I18n(ctx context.Context) string {
 		cls.params = make(map[string]string)
 	}
 
-	cls.params[".ErrorCodes"] = cls.e.GetCode()
-
-	var codes []string
-	for _, relation := range cls.e.Relations() {
-		codes = append(codes, relation.GetCode())
-	}
-
-	if 0 != len(codes) {
-		cls.params[".ErrorCodes"] = cls.params[".ErrorCodes"] + "(" + strings.Join(codes, ",") + ")"
-	}
+	cls.params["ErrorCodes"] = cls.e.Error()
 
 	return i18n.New(cls.id, cls.params).Localize(ctx)
 }

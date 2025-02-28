@@ -8,16 +8,11 @@ import (
 	"net/http"
 )
 
-func Wrapper(handler func(*gin.Context) (response.Code, any, errors.Error)) gin.HandlerFunc {
+func Wrapper(handler func(*gin.Context) (response.Code, any, errors.I18nError)) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		var code, res, err = handler(c)
 		if response.Ok != code || nil != err {
-			var message = err.Error()
-
-			// 不能用errors.Is
-			if ie, ok := err.(errors.Error); ok {
-				message = ie.I18n(contextutil.NewContextWithGin(c))
-			}
+			var message = err.I18n(contextutil.NewContextWithGin(c))
 
 			if nil != res {
 				response.FailureWithData(c, code, message, res)

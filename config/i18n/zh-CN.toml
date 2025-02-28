@@ -1,2 +1,3 @@
-common-record-not-found = "数据库记录不存在"
-common-server-internal-error = "服务器内部错误"
+common-invalid-request = "无效的数据请求. 错误代码序列: {{.ErrorCodes}}"
+common-record-not-found = "数据库记录不存在. 错误代码序列: {{.ErrorCodes}}"
+common-server-internal-error = "服务器内部错误. 错误代码序列: {{.ErrorCodes}}"

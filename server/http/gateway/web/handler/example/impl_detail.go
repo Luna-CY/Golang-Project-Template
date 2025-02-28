@@ -3,6 +3,7 @@ package example
 import (
 	"github.com/Luna-CY/Golang-Project-Template/internal/context/contextutil"
 	"github.com/Luna-CY/Golang-Project-Template/internal/errors"
+	"github.com/Luna-CY/Golang-Project-Template/internal/i18n"
 	"github.com/Luna-CY/Golang-Project-Template/internal/util/pointer"
 	"github.com/Luna-CY/Golang-Project-Template/server/http/request"
 	"github.com/Luna-CY/Golang-Project-Template/server/http/response"
@@ -29,20 +30,20 @@ type DetailResponse struct {
 // @Param param body DetailRequest true "request body"
 // @Success 200 {object} response.Response{data=DetailResponse{}} "successful. click to expand response structure"
 // @Router /example/detail [post]
-func (cls *Example) Detail(c *gin.Context) (response.Code, any, errors.Error) {
+func (cls *Example) Detail(c *gin.Context) (response.Code, any, errors.I18nError) {
 	var body = DetailRequest{}
 	if err := request.ShouldBindJSON(c, &body); nil != err {
-		return response.InvalidParams, nil, err.Relation(errors.ErrorServerInvalidRequest("SHGWHE.E_LE.D_IL.35"))
+		return response.InvalidParams, nil, errors.NewI18n(i18n.CommonIdInvalidRequest, err.Relation(errors.ErrorInvalidRequest("SHGWHE.E_LE.D_IL.35")))
 	}
 
 	var ctx = contextutil.NewContextWithGin(c)
 	data, err := cls.example.GetExampleById(ctx, body.Id, false)
 	if nil != err {
 		if err.IsType(errors.ErrorTypeRecordNotFound) {
-			return response.InvalidParams, nil, err.Relation(errors.New(errors.ErrorTypeInvalidRequest, "SHGWHE.E_LE.D_IL.42", "example record not found: %d", body.Id))
+			return response.InvalidParams, nil, errors.NewI18n(i18n.CommonIdServerInternalError, err.Relation(errors.New(errors.ErrorTypeInvalidRequest, "SHGWHE.E_LE.D_IL.43", "example record not found: %d", body.Id)))
 		}
 
-		return response.ServerInternalError, nil, err.Relation(errors.ErrorServerInternalError("SHGWHE.E_LE.D_IL.45"))
+		return response.ServerInternalError, nil, errors.NewI18n(i18n.CommonIdServerInternalError, err.Relation(errors.ErrorServerInternalError("SHGWHE.E_LE.D_IL.45")))
 	}
 
 	var res = pointer.Default(DetailResponse{

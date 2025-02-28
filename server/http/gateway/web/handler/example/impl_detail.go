@@ -40,7 +40,7 @@ func (cls *Example) Detail(c *gin.Context) (response.Code, any, errors.I18nError
 	data, err := cls.example.GetExampleById(ctx, body.Id, false)
 	if nil != err {
 		if err.IsType(errors.ErrorTypeRecordNotFound) {
-			return response.InvalidParams, nil, errors.NewI18n(i18n.CommonIdServerInternalError, err.Relation(errors.New(errors.ErrorTypeInvalidRequest, "SHGWHE_LE.E_LE.D_IL.43", "example record not found: %d", body.Id)))
+			return response.InvalidParams, nil, errors.NewI18n(i18n.CommonIdInvalidRequest, err.Relation(errors.New(errors.ErrorTypeInvalidRequest, "SHGWHE_LE.E_LE.D_IL.43", "example record not found: %d", body.Id)))
 		}
 
 		return response.ServerInternalError, nil, errors.NewI18n(i18n.CommonIdServerInternalError, err.Relation(errors.ErrorServerInternalError("SHGWHE_LE.E_LE.D_IL.45")))

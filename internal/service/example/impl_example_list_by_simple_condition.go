@@ -9,7 +9,7 @@ import (
 func (cls *Example) ListBySimpleCondition(ctx context.Context, field4 *model.ExampleEnumFieldType, page int, size int) (int64, []*model.Example, errors.Error) {
 	total, data, err := cls.example.FindExampleBySimpleCondition(ctx, field4, page, size)
 	if nil != err {
-		return 0, nil, err.Relation(errors.ErrorServerInternalError("IS.E_LE.LBSC_ON.12"))
+		return 0, nil, err.Relation(errors.ErrorServerInternalError("ISE_LE.E_LE.LBSC_ON.12"))
 	}
 
 	return total, data, nil

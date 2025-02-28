@@ -33,17 +33,17 @@ type DetailResponse struct {
 func (cls *Example) Detail(c *gin.Context) (response.Code, any, errors.I18nError) {
 	var body = DetailRequest{}
 	if err := request.ShouldBindJSON(c, &body); nil != err {
-		return response.InvalidParams, nil, errors.NewI18n(i18n.CommonIdInvalidRequest, err.Relation(errors.ErrorInvalidRequest("SHGWHE.E_LE.D_IL.35")))
+		return response.InvalidParams, nil, errors.NewI18n(i18n.CommonIdInvalidRequest, err.Relation(errors.ErrorInvalidRequest("SHGWHE_LE.E_LE.D_IL.35")))
 	}
 
 	var ctx = contextutil.NewContextWithGin(c)
 	data, err := cls.example.GetExampleById(ctx, body.Id, false)
 	if nil != err {
 		if err.IsType(errors.ErrorTypeRecordNotFound) {
-			return response.InvalidParams, nil, errors.NewI18n(i18n.CommonIdServerInternalError, err.Relation(errors.New(errors.ErrorTypeInvalidRequest, "SHGWHE.E_LE.D_IL.43", "example record not found: %d", body.Id)))
+			return response.InvalidParams, nil, errors.NewI18n(i18n.CommonIdServerInternalError, err.Relation(errors.New(errors.ErrorTypeInvalidRequest, "SHGWHE_LE.E_LE.D_IL.43", "example record not found: %d", body.Id)))
 		}
 
-		return response.ServerInternalError, nil, errors.NewI18n(i18n.CommonIdServerInternalError, err.Relation(errors.ErrorServerInternalError("SHGWHE.E_LE.D_IL.45")))
+		return response.ServerInternalError, nil, errors.NewI18n(i18n.CommonIdServerInternalError, err.Relation(errors.ErrorServerInternalError("SHGWHE_LE.E_LE.D_IL.45")))
 	}
 
 	var res = pointer.Default(DetailResponse{

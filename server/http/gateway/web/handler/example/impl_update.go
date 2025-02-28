@@ -28,23 +28,23 @@ type UpdateRequest struct {
 func (cls *Example) Update(c *gin.Context) (response.Code, any, errors.I18nError) {
 	var body = UpdateRequest{}
 	if err := request.ShouldBindJSON(c, &body); nil != err {
-		return response.InvalidParams, nil, errors.NewI18n(i18n.CommonIdInvalidRequest, err.Relation(errors.ErrorInvalidRequest("SHGWHE.E_LE.U_TE.31")))
+		return response.InvalidParams, nil, errors.NewI18n(i18n.CommonIdInvalidRequest, err.Relation(errors.ErrorInvalidRequest("SHGWHE_LE.E_LE.U_TE.31")))
 	}
 
 	var ctx = contextutil.NewContextWithGin(c)
 	example, err := cls.example.GetExampleById(ctx, body.Id, false)
 	if nil != err {
 		if err.IsType(errors.ErrorTypeRecordNotFound) {
-			return response.InvalidParams, nil, errors.NewI18n(i18n.CommonIdRecordNotFound, err.Relation(errors.New(errors.ErrorTypeInvalidRequest, "SHGWHE.E_LE.U_TE.38", "example record not found: %d", body.Id)))
+			return response.InvalidParams, nil, errors.NewI18n(i18n.CommonIdRecordNotFound, err.Relation(errors.New(errors.ErrorTypeInvalidRequest, "SHGWHE_LE.E_LE.U_TE.38", "example record not found: %d", body.Id)))
 		}
 
-		return response.ServerInternalError, nil, errors.NewI18n(i18n.CommonIdServerInternalError, err.Relation(errors.ErrorServerInternalError("SHGWHE.E_LE.U_TE.41")))
+		return response.ServerInternalError, nil, errors.NewI18n(i18n.CommonIdServerInternalError, err.Relation(errors.ErrorServerInternalError("SHGWHE_LE.E_LE.U_TE.41")))
 	}
 
 	// if need transaction
 	//if err := cls.example.WithTransaction(ctx, func(ctx context.Context) errors.Error {
 	//	if err := cls.example.UpdateExample(ctx, example, pointer.New(body.Field1), pointer.New(body.Field2), pointer.New(body.Field3), pointer.New(model.ExampleEnumFieldType(body.Field4))); nil != err {
-	//		return err.Relation(errors.ErrorServerInternalError("SHGWHE.E_LE.U_TE.47"))
+	//		return err.Relation(errors.ErrorServerInternalError("SHGWHE_LE.E_LE.U_TE.47"))
 	//	}
 	//
 	//	return nil
@@ -53,7 +53,7 @@ func (cls *Example) Update(c *gin.Context) (response.Code, any, errors.I18nError
 	//}
 
 	if err := cls.example.UpdateExample(ctx, example, pointer.New(body.Field1), pointer.New(body.Field2), pointer.New(body.Field3), pointer.New(model.ExampleEnumFieldType(body.Field4))); nil != err {
-		return response.ServerInternalError, nil, errors.NewI18n(i18n.CommonIdServerInternalError, err.Relation(errors.ErrorServerInternalError("SHGWHE.E_LE.U_TE.56")))
+		return response.ServerInternalError, nil, errors.NewI18n(i18n.CommonIdServerInternalError, err.Relation(errors.ErrorServerInternalError("SHGWHE_LE.E_LE.U_TE.56")))
 	}
 
 	return response.Ok, nil, nil

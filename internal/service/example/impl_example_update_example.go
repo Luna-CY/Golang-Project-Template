@@ -13,7 +13,7 @@ func (cls *Example) UpdateExample(ctx context.Context, example *model.Example, f
 	if nil == example {
 		logger.SugarLogger(ctx).Errorf("I.S.Example.UpdateExample: example is nil stack %s", string(debug.Stack()))
 
-		return errors.ErrorServerInternalError("IS.E_LE.UE_LE.16")
+		return errors.ErrorServerInternalError("ISE_LE.E_LE.UE_LE.16")
 	}
 
 	example.Field1 = pointer.Or(field1, example.Field1)
@@ -22,7 +22,7 @@ func (cls *Example) UpdateExample(ctx context.Context, example *model.Example, f
 	example.Field4 = pointer.Or(field4, example.Field4)
 
 	if err := cls.example.SaveExample(ctx, example); nil != err {
-		return err.Relation(errors.ErrorServerInternalError("IS.E_LE.UE_LE.25"))
+		return err.Relation(errors.ErrorServerInternalError("ISE_LE.E_LE.UE_LE.25"))
 	}
 
 	return nil

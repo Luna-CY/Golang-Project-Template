@@ -12,7 +12,7 @@ func (cls *Task) GetOneTimeTaskState(ctx context.Context, taskId string) (proces
 
 	task, ok := cls.tasks[taskId]
 	if !ok {
-		return false, 0, errors.ErrorRecordNotFound("IS.T_SK.GOTTS_TE.15")
+		return false, 0, errors.ErrorRecordNotFound("IST_SK.T_SK.GOTTS_TE.15")
 	}
 
 	processing = 1 == atomic.LoadInt32(&task.processing)

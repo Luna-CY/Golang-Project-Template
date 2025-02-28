@@ -15,5 +15,5 @@ func CheckPathExists(path string) (bool, errors.Error) {
 		return false, nil
 	}
 
-	return false, errors.New(errors.ErrorTypeServerInternalError, "IU.I_OS.CPE_TS.18", err)
+	return false, errors.New(errors.ErrorTypeServerInternalError, "IUI_OS.CPE_TS.18", err)
 }

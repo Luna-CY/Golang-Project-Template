@@ -16,7 +16,7 @@ func (cls *Example) FindExampleBySimpleCondition(ctx context.Context, field4 *mo
 	if err := session.Count(&total).Error; nil != err {
 		logger.SugarLogger(ctx).Errorf("I.D.Example.FindExampleBySimpleCondition count failed, err %v", err)
 
-		return 0, nil, errors.ErrorServerInternalError("ID.E_LE.FEBSC.19")
+		return 0, nil, errors.ErrorServerInternalError("IDE_LE.E_LE.FEBSC.19")
 	}
 
 	if 0 == total || 0 == size || int64((page-1)*size) >= total {
@@ -27,7 +27,7 @@ func (cls *Example) FindExampleBySimpleCondition(ctx context.Context, field4 *mo
 	if err := session.Offset((page - 1) * size).Limit(size).Order("id desc").Find(&data).Error; nil != err {
 		logger.SugarLogger(ctx).Errorf("I.D.Example.FindExampleBySimpleCondition find failed, err %v", err)
 
-		return 0, nil, errors.ErrorServerInternalError("ID.E_LE.FEBSC.30")
+		return 0, nil, errors.ErrorServerInternalError("IDE_LE.E_LE.FEBSC.30")
 	}
 
 	return total, data, nil

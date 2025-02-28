@@ -15,7 +15,7 @@ func (cls *Transactional) Commit(ctx context.Context) errors.Error {
 
 	cls.flag = true
 	if err := cls.db.Commit().Error; nil != err {
-		return errors.New(errors.ErrorTypeServerInternalError, "IT.C_IT.18", err)
+		return errors.New(errors.ErrorTypeServerInternalError, "IT_AL.T_AL.C_IT.18", err)
 	}
 
 	// if commit successful, call on commit hooks

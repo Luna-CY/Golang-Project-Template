@@ -22,7 +22,7 @@ func (cls *Transactional) Rollback(ctx context.Context) errors.Error {
 	}()
 
 	if err := cls.db.Rollback().Error; nil != err {
-		return errors.New(errors.ErrorTypeServerInternalError, "IT.R_CK.25", err)
+		return errors.New(errors.ErrorTypeServerInternalError, "IT_AL.T_AL.R_CK.25", err)
 	}
 
 	return nil

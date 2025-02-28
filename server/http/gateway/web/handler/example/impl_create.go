@@ -26,12 +26,12 @@ type CreateRequest struct {
 func (cls *Example) Create(c *gin.Context) (response.Code, any, errors.I18nError) {
 	var body = CreateRequest{}
 	if err := request.ShouldBindJSON(c, &body); nil != err {
-		return response.InvalidParams, nil, errors.NewI18n(i18n.CommonIdInvalidRequest, err.Relation(errors.ErrorInvalidRequest("SHGWHE.E_LE.C_TE.29")))
+		return response.InvalidParams, nil, errors.NewI18n(i18n.CommonIdInvalidRequest, err.Relation(errors.ErrorInvalidRequest("SHGWHE_LE.E_LE.C_TE.29")))
 	}
 
 	var ctx = contextutil.NewContextWithGin(c)
 	if _, err := cls.example.CreateExample(ctx, body.Field1, body.Field2, body.Field3, model.ExampleEnumFieldType(body.Field4)); nil != err {
-		return response.ServerInternalError, nil, errors.NewI18n(i18n.CommonIdServerInternalError, err.Relation(errors.ErrorServerInternalError("SHGWHE.E_LE.C_TE.34")))
+		return response.ServerInternalError, nil, errors.NewI18n(i18n.CommonIdServerInternalError, err.Relation(errors.ErrorServerInternalError("SHGWHE_LE.E_LE.C_TE.34")))
 	}
 
 	return response.Ok, nil, nil

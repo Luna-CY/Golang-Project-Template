@@ -44,7 +44,7 @@ func (cls *BaseDao) BeginTransaction(ctx context.Context) (transactional.Transac
 	if nil != db.Error {
 		logger.SugarLogger(ctx).Errorf("I.D.BaseDao.BeginTransaction start transaction error: %v", db.Error)
 
-		return nil, errors.New(errors.ErrorTypeServerInternalError, "ID.BD_AO.BT_ON.47", "start transaction error: %v", db.Error)
+		return nil, errors.New(errors.ErrorTypeServerInternalError, "ID_AO.BD_AO.BT_ON.47", "start transaction error: %v", db.Error)
 	}
 
 	return transactional2.New(db), nil

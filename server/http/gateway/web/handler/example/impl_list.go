@@ -33,7 +33,7 @@ type ListItem struct {
 func (cls *Example) List(c *gin.Context) (response.Code, any, errors.I18nError) {
 	var body = ListRequest{BaseListRequest: request.BaseListRequest{Page: 1, Size: 20}}
 	if err := request.ShouldBindJSON(c, &body); nil != err {
-		return response.InvalidParams, nil, errors.NewI18n(i18n.CommonIdInvalidRequest, err.Relation(errors.ErrorInvalidRequest("SHGWHE.E_LE.L_ST.36")))
+		return response.InvalidParams, nil, errors.NewI18n(i18n.CommonIdInvalidRequest, err.Relation(errors.ErrorInvalidRequest("SHGWHE_LE.E_LE.L_ST.36")))
 	}
 
 	var field4 *model.ExampleEnumFieldType
@@ -48,7 +48,7 @@ func (cls *Example) List(c *gin.Context) (response.Code, any, errors.I18nError) 
 	// search data
 	total, data, err := cls.example.ListBySimpleCondition(ctx, field4, body.Page, body.Size)
 	if nil != err {
-		return response.ServerInternalError, nil, errors.NewI18n(i18n.CommonIdServerInternalError, err.Relation(errors.ErrorServerInternalError("SHGWHE.E_LE.L_ST.50")))
+		return response.ServerInternalError, nil, errors.NewI18n(i18n.CommonIdServerInternalError, err.Relation(errors.ErrorServerInternalError("SHGWHE_LE.E_LE.L_ST.50")))
 	}
 
 	// response data

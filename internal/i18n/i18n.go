@@ -4,6 +4,7 @@ import (
 	"github.com/Luna-CY/Golang-Project-Template/internal/context"
 	"github.com/Luna-CY/Golang-Project-Template/internal/language"
 	"github.com/Luna-CY/Golang-Project-Template/internal/logger"
+	"github.com/Luna-CY/Golang-Project-Template/internal/util/pointer"
 	"strings"
 	"text/template"
 )
@@ -19,14 +20,7 @@ type Localize struct {
 
 // Localize 本地化
 func (cls Localize) Localize(ctx context.Context) string {
-	var lang = string(GetAcceptLanguage(ctx))
-
-	messages, ok := languages[lang]
-	if !ok {
-		logger.SugarLogger(ctx).Errorf("I18N: not found language configuration: %s", lang)
-
-		return ""
-	}
+	var messages = pointer.Or(languages[GetAcceptLanguage(ctx)], languages[language.SimpleChinese])
 
 	message, ok := messages[cls.id]
 	if !ok {

@@ -1,13 +1,14 @@
 package i18n
 
 import (
+	"github.com/Luna-CY/Golang-Project-Template/internal/language"
 	"github.com/pelletier/go-toml/v2"
 	"os"
 	"path/filepath"
 	"strings"
 )
 
-var languages = map[string]map[string]string{}
+var languages = map[language.Language]map[string]string{}
 
 func Init() error {
 	if err := filepath.Walk(filepath.Join("config", "i18n"), func(path string, info os.FileInfo, err error) error {
@@ -29,7 +30,7 @@ func Init() error {
 			return err
 		}
 
-		languages[strings.Split(info.Name(), ".")[0]] = messages
+		languages[language.Language(strings.Split(info.Name(), ".")[0])] = messages
 		_ = f.Close()
 
 		return nil

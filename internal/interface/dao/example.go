@@ -14,7 +14,7 @@ type Example interface {
 	SaveExample(ctx context.Context, example *model.Example) errors.Error
 
 	// TakeExampleById get example by id from db
-	// if example not found, return errors.ErrorRecordNotFound error
+	// if example not found, return error type with errors.ErrorTypeRecordNotFound
 	TakeExampleById(ctx context.Context, id uint64, lock bool) (*model.Example, errors.Error)
 
 	// FindExampleBySimpleCondition find examples by simple condition from db

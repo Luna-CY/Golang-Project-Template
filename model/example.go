@@ -8,7 +8,7 @@ const (
 	ExampleEnumFieldTypeC = ExampleEnumFieldType(3) // Example enum field C
 )
 
-// //go:generate go run ../cmd/main/main.go generate dao --save --take-by Field1=string=,Field4=model.ExampleEnumFieldType=model.ExampleEnumFieldType(0) --delete-by Field1=string= --batch-take-by Field1=string
+//go:generate go run ../cmd/main/main.go generate dao --save --take-by Id=uint64=0 --batch-take-by Id=uint64
 
 type Example struct {
 	Model

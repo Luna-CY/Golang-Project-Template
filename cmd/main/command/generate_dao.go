@@ -106,7 +106,7 @@ type {{.ModelName}} interface {
 	// if {{.ModelName}} id is 0, it will create a new record, otherwise, it will update the record
 	Save{{.ModelName}}(ctx context.Context, {{.LowerModelName}} *model.{{.ModelName}}) errors.Error`
 
-		methods.WriteString(strings.NewReplacer("{{.ModelName}}", modelName, "{{.LowerModelName}}", strings.ToLower(modelName)).Replace(saveMethodCode))
+		methods.WriteString(strings.NewReplacer("{{.ModelName}}", modelName, "{{.LowerModelName}}", strings.ToLower(string(modelName[0]))+modelName[1:]).Replace(saveMethodCode))
 	}
 
 	if 0 != len(takeBy) {
@@ -121,9 +121,9 @@ type {{.ModelName}} interface {
 
 			var takeByMethodCode = `
 
-	// TakeBy{{.FieldName}} get {{.ModelName}} by {{.FieldName}} from db
-	// if {{.ModelName}} not found, return errors.ErrorRecordNotFound error
-	TakeBy{{.FieldName}}(ctx context.Context, {{.LowerFieldName}} {{.FieldType}}, lock bool) (*model.{{.ModelName}}, errors.Error)`
+	// Take{{.ModelName}}By{{.FieldName}} get {{.ModelName}} by {{.FieldName}} from db
+	// if {{.ModelName}} not found, return error type with errors.ErrorTypeRecordNotFound
+	Take{{.ModelName}}By{{.FieldName}}(ctx context.Context, {{.LowerFieldName}} {{.FieldType}}, lock bool) (*model.{{.ModelName}}, errors.Error)`
 
 			takeByList[i] = strings.NewReplacer("{{.ModelName}}", modelName, "{{.FieldName}}", tokens[0], "{{.LowerFieldName}}", strings.ToLower(tokens[0]), "{{.FieldType}}", tokens[1]).Replace(takeByMethodCode)
 		}
@@ -143,8 +143,8 @@ type {{.ModelName}} interface {
 
 			var deleteByMethodCode = `
 
-	// DeleteBy{{.FieldName}} delete {{.ModelName}} by {{.FieldName}} from db
-	DeleteBy{{.FieldName}}(ctx context.Context, {{.LowerFieldName}} {{.FieldType}}) errors.Error`
+	// Delete{{.ModelName}}By{{.FieldName}} delete {{.ModelName}} by {{.FieldName}} from db
+	Delete{{.ModelName}}By{{.FieldName}}(ctx context.Context, {{.LowerFieldName}} {{.FieldType}}) errors.Error`
 
 			deleteByList[i] = strings.NewReplacer("{{.ModelName}}", modelName, "{{.FieldName}}", tokens[0], "{{.LowerFieldName}}", strings.ToLower(tokens[0]), "{{.FieldType}}", tokens[1]).Replace(deleteByMethodCode)
 		}
@@ -164,8 +164,8 @@ type {{.ModelName}} interface {
 
 			var batchTakeByMethodCode = `
 
-	// BatchTakeBy{{.FieldName}} get {{.ModelName}} by {{.FieldName}} from db
-	BatchTakeBy{{.FieldName}}(ctx context.Context, {{.LowerFieldName}} []{{.FieldType}}, lock bool) ([]*model.{{.ModelName}}, errors.Error)`
+	// BatchTake{{.ModelName}}By{{.FieldName}} get {{.ModelName}} by {{.FieldName}} from db
+	BatchTake{{.ModelName}}By{{.FieldName}}(ctx context.Context, {{.LowerFieldName}} []{{.FieldType}}, lock bool) ([]*model.{{.ModelName}}, errors.Error)`
 
 			batchTakeByList[i] = strings.NewReplacer("{{.ModelName}}", modelName, "{{.FieldName}}", tokens[0], "{{.LowerFieldName}}", strings.ToLower(tokens[0]), "{{.FieldType}}", tokens[1]).Replace(batchTakeByMethodCode)
 		}
@@ -175,7 +175,7 @@ type {{.ModelName}} interface {
 
 	var content = strings.NewReplacer("{{.ModelName}}", modelName, "{{.Methods}}", methods.String()).Replace(template)
 
-	path, err := filepath.Abs(filepath.Join("..", "internal", "interface", "dao", fmt.Sprintf("%s.go", strings.ToLower(modelName))))
+	path, err := filepath.Abs(filepath.Join("..", "internal", "interface", "dao", fmt.Sprintf("%s.go", istrings.CamelCaseToUnderscore(modelName))))
 	if nil != err {
 		return fmt.Errorf("获取绝对路径失败: %s, err: %s", path, err)
 	}
@@ -207,7 +207,6 @@ func New() *{{.ModelName}} {
 type {{.ModelName}} struct {
 	*dao.BaseDao
 }
-
 `
 
 var saveImplementCode = `package {{.LowerModelName}}
@@ -250,7 +249,6 @@ func (cls *{{.ModelName}}) Save{{.ModelName}}(ctx context.Context, {{.LowerModel
 
 	return nil
 }
-
 `
 
 var takeByCode = `package {{.LowerModelName}}
@@ -265,7 +263,7 @@ import (
 	"runtime/debug"
 )
 
-func (cls *{{.ModelName}}) TakeBy{{.FieldName}}(ctx context.Context, {{.LowerFieldName}} {{.FieldType}}, lock bool) (*model.{{.ModelName}}, errors.Error) {
+func (cls *{{.ModelName}}) Take{{.ModelName}}By{{.FieldName}}(ctx context.Context, {{.LowerFieldName}} {{.FieldType}}, lock bool) (*model.{{.ModelName}}, errors.Error) {
 	if {{.DefaultValue}} == {{.LowerFieldName}} {
 		logger.SugarLogger(ctx).Errorf("I.D.{{.ModelName}}.TakeBy{{.FieldName}} {{.LowerFieldName}} is %v stack %s", {{.DefaultValue}}, string(debug.Stack()))
 
@@ -288,7 +286,6 @@ func (cls *{{.ModelName}}) TakeBy{{.FieldName}}(ctx context.Context, {{.LowerFie
 
 	return {{.LowerModelName}}, nil
 }
-
 `
 
 var deleteByCode = `package {{.LowerModelName}}
@@ -301,7 +298,7 @@ import (
 	"runtime/debug"
 )
 
-func (cls *{{.ModelName}}) DeleteBy{{.FieldName}}(ctx context.Context, {{.LowerFieldName}} {{.FieldType}}) errors.Error {
+func (cls *{{.ModelName}}) Delete{{.ModelName}}By{{.FieldName}}(ctx context.Context, {{.LowerFieldName}} {{.FieldType}}) errors.Error {
 	if {{.DefaultValue}} == {{.LowerFieldName}} {
 		logger.SugarLogger(ctx).Errorf("I.D.{{.ModelName}}.DeleteBy{{.FieldName}}: {{.LowerFieldName}} is %v stack %s", {{.DefaultValue}}, string(debug.Stack()))
 
@@ -316,7 +313,6 @@ func (cls *{{.ModelName}}) DeleteBy{{.FieldName}}(ctx context.Context, {{.LowerF
 
 	return nil
 }
-
 `
 
 var batchTakeByCode = `package {{.LowerModelName}}
@@ -330,7 +326,7 @@ import (
 	"runtime/debug"
 )
 
-func (cls *{{.ModelName}}) BatchTakeBy{{.FieldName}}(ctx context.Context, values []{{.FieldType}}, lock bool) ([]*model.{{.ModelName}}, errors.Error) {
+func (cls *{{.ModelName}}) BatchTake{{.ModelName}}By{{.FieldName}}(ctx context.Context, values []{{.FieldType}}, lock bool) ([]*model.{{.ModelName}}, errors.Error) {
 	if 0 == len(values) {
 		logger.SugarLogger(ctx).Errorf("I.D.{{.ModelName}}.BatchTakeById: values is empty stack %s", string(debug.Stack()))
 
@@ -349,11 +345,10 @@ func (cls *{{.ModelName}}) BatchTakeBy{{.FieldName}}(ctx context.Context, values
 
 	return data, nil
 }
-
 `
 
 func GenerateDaoFiles(modelName string, save bool, takeBy []string, deleteBy []string, batchTakeBy []string) error {
-	root, err := filepath.Abs(filepath.Join("..", "internal", "dao", strings.ToLower(modelName)))
+	root, err := filepath.Abs(filepath.Join("..", "internal", "dao", istrings.CamelCaseToUnderscore(modelName)))
 	if nil != err {
 		return fmt.Errorf("获取绝对路径失败: %s, err: %s", root, err)
 	}
@@ -362,7 +357,7 @@ func GenerateDaoFiles(modelName string, save bool, takeBy []string, deleteBy []s
 		return fmt.Errorf("创建文件夹失败: %s, err: %s", root, err)
 	}
 
-	var kvs = []string{"{{.ModelName}}", modelName, "{{.LowerModelName}}", strings.ToLower(modelName)}
+	var kvs = []string{"{{.ModelName}}", modelName, "{{.LowerModelName}}", strings.ToLower(string(modelName[0])) + modelName[1:]}
 
 	{
 		// generate impl.go
@@ -379,7 +374,7 @@ func GenerateDaoFiles(modelName string, save bool, takeBy []string, deleteBy []s
 		var kvs = append(kvs, "{{.Code}}", code)
 
 		// generate impl_{{ModelName}}_save_{{ModelName}}.go
-		var path = filepath.Join(root, fmt.Sprintf("impl_%s_save_%s.go", strings.ToLower(modelName), strings.ToLower(modelName)))
+		var path = filepath.Join(root, fmt.Sprintf("impl_%s_save_%s.go", istrings.CamelCaseToUnderscore(modelName), istrings.CamelCaseToUnderscore(modelName)))
 
 		exists, err := los.CheckPathExists(path)
 		if nil != err {
@@ -403,11 +398,11 @@ func GenerateDaoFiles(modelName string, save bool, takeBy []string, deleteBy []s
 			tokens[2] = "\"\""
 		}
 
-		var code = fmt.Sprintf("%s.%s.%s", "ID"+istrings.GetUpperChars(modelName)+"_"+strings.ToUpper(modelName[len(modelName)-2:]), istrings.GetUpperChars(modelName)+"_"+strings.ToUpper(modelName[len(modelName)-2:]), "TB"+istrings.GetUpperChars(tokens[0])+"_"+strings.ToUpper(tokens[0][len(tokens[0])-2:]))
+		var code = fmt.Sprintf("%s.%s.%s", "ID"+istrings.GetUpperChars(modelName)+"_"+strings.ToUpper(modelName[len(modelName)-2:]), istrings.GetUpperChars(modelName)+"_"+strings.ToUpper(modelName[len(modelName)-2:]), "T"+istrings.GetUpperChars(modelName)+"B"+istrings.GetUpperChars(tokens[0])+"_"+strings.ToUpper(tokens[0][len(tokens[0])-2:]))
 		var kvs = append(kvs, "{{.FieldName}}", tokens[0], "{{.LowerFieldName}}", strings.ToLower(tokens[0]), "{{.FieldType}}", tokens[1], "{{.DefaultValue}}", tokens[2], "{{.Code}}", code)
 
 		// generate impl_{{ModelName}}_take_by_{{FieldName}}.go
-		var path = filepath.Join(root, fmt.Sprintf("impl_%s_take_by_%s.go", strings.ToLower(modelName), strings.ToLower(tokens[0])))
+		var path = filepath.Join(root, fmt.Sprintf("impl_%s_take_%s_by_%s.go", istrings.CamelCaseToUnderscore(modelName), istrings.CamelCaseToUnderscore(modelName), istrings.CamelCaseToUnderscore(tokens[0])))
 
 		exists, err := los.CheckPathExists(path)
 		if nil != err {
@@ -431,11 +426,11 @@ func GenerateDaoFiles(modelName string, save bool, takeBy []string, deleteBy []s
 			tokens[2] = "\"\""
 		}
 
-		var code = fmt.Sprintf("%s.%s.%s", "ID"+istrings.GetUpperChars(modelName)+"_"+strings.ToUpper(modelName[len(modelName)-2:]), istrings.GetUpperChars(modelName)+"_"+strings.ToUpper(modelName[len(modelName)-2:]), "DB"+istrings.GetUpperChars(tokens[0])+"_"+strings.ToUpper(tokens[0][len(tokens[0])-2:]))
+		var code = fmt.Sprintf("%s.%s.%s", "ID"+istrings.GetUpperChars(modelName)+"_"+strings.ToUpper(modelName[len(modelName)-2:]), istrings.GetUpperChars(modelName)+"_"+strings.ToUpper(modelName[len(modelName)-2:]), "D"+istrings.GetUpperChars(modelName)+"B"+istrings.GetUpperChars(tokens[0])+"_"+strings.ToUpper(tokens[0][len(tokens[0])-2:]))
 		var kvs = append(kvs, "{{.FieldName}}", tokens[0], "{{.LowerFieldName}}", strings.ToLower(tokens[0]), "{{.FieldType}}", tokens[1], "{{.DefaultValue}}", tokens[2], "{{.Code}}", code)
 
 		// generate impl_{{ModelName}}_delete_by_{{FieldName}}.go
-		var path = filepath.Join(root, fmt.Sprintf("impl_%s_delete_by_%s.go", strings.ToLower(modelName), strings.ToLower(tokens[0])))
+		var path = filepath.Join(root, fmt.Sprintf("impl_%s_delete_%s_by_%s.go", istrings.CamelCaseToUnderscore(modelName), istrings.CamelCaseToUnderscore(modelName), istrings.CamelCaseToUnderscore(tokens[0])))
 
 		exists, err := los.CheckPathExists(path)
 		if nil != err {
@@ -455,11 +450,11 @@ func GenerateDaoFiles(modelName string, save bool, takeBy []string, deleteBy []s
 			return fmt.Errorf("无效的batch-take-by参数配置: %s，每个选项必须以=号分割两个值：字段名=字段类型", item)
 		}
 
-		var code = fmt.Sprintf("%s.%s.%s", "ID"+istrings.GetUpperChars(modelName)+"_"+strings.ToUpper(modelName[len(modelName)-2:]), istrings.GetUpperChars(modelName)+"_"+strings.ToUpper(modelName[len(modelName)-2:]), "BTB"+istrings.GetUpperChars(tokens[0])+"_"+strings.ToUpper(tokens[0][len(tokens[0])-2:]))
+		var code = fmt.Sprintf("%s.%s.%s", "ID"+istrings.GetUpperChars(modelName)+"_"+strings.ToUpper(modelName[len(modelName)-2:]), istrings.GetUpperChars(modelName)+"_"+strings.ToUpper(modelName[len(modelName)-2:]), "BT"+istrings.GetUpperChars(modelName)+"B"+istrings.GetUpperChars(tokens[0])+"_"+strings.ToUpper(tokens[0][len(tokens[0])-2:]))
 		var kvs = append(kvs, "{{.FieldName}}", tokens[0], "{{.LowerFieldName}}", strings.ToLower(tokens[0]), "{{.FieldType}}", tokens[1], "{{.Code}}", code)
 
 		// generate impl_{{ModelName}}_batch_take_by_{{FieldName}}.go
-		var path = filepath.Join(root, fmt.Sprintf("impl_%s_batch_take_by_%s.go", strings.ToLower(modelName), strings.ToLower(tokens[0])))
+		var path = filepath.Join(root, fmt.Sprintf("impl_%s_batch_take_%s_by_%s.go", istrings.CamelCaseToUnderscore(modelName), istrings.CamelCaseToUnderscore(modelName), istrings.CamelCaseToUnderscore(tokens[0])))
 
 		exists, err := los.CheckPathExists(path)
 		if nil != err {

@@ -32,4 +32,8 @@ var Configuration struct {
 			} `mapstructure:"web"` // web server configuration
 		} `mapstructure:"http"` // http server configuration
 	} `mapstructure:"server"` // server configuration
+	Sentry struct {
+		Enable bool   `mapstructure:"enable"` // if true, enable sentry middleware
+		Dsn    string `mapstructure:"dsn"`    // sentry server dsn string
+	} `mapstructure:"sentry"` // sentry configuration
 }

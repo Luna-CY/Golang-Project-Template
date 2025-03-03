@@ -16,3 +16,7 @@ prefix = ""
 
 [server.http]
 web = { listen = ":8000", trusted_proxies = [], under_maintenance = false }
+
+[sentry]
+enable = false
+dsn = ""

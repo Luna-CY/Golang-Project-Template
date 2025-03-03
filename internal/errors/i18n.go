@@ -16,7 +16,7 @@ func NewI18n(id string, e Error, params ...string) I18nError {
 		p[params[i]] = params[i+1]
 	}
 
-	return &II18nError{id: id, e: e, params: p}
+	return &i18e{id: id, e: e, params: p}
 }
 
 type I18nError interface {
@@ -24,13 +24,13 @@ type I18nError interface {
 	I18n(ctx context.Context) string
 }
 
-type II18nError struct {
+type i18e struct {
 	e      Error             // 基础错误信息
 	id     string            // I18N国际化使用的消息ID
 	params map[string]string // I18N国际化使用的命名参数表
 }
 
-func (cls *II18nError) I18n(ctx context.Context) string {
+func (cls *i18e) I18n(ctx context.Context) string {
 	if nil == cls.params {
 		cls.params = make(map[string]string)
 	}

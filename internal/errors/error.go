@@ -43,10 +43,10 @@ type Error interface {
 }
 
 func New(t ErrorType, code string, message any, params ...any) Error {
-	return &IError{t: t, code: code, message: message, values: params}
+	return &ie{t: t, code: code, message: message, values: params}
 }
 
-type IError struct {
+type ie struct {
 	t         ErrorType // 错误类型
 	code      string    // 具体的错误编码，硬编码在发生错误的地方
 	message   any       // 消息内容，可以为任何支持%v显示的内容
@@ -54,7 +54,7 @@ type IError struct {
 	relations []Error   // 关联的错误列表
 }
 
-func (cls *IError) Error() string {
+func (cls *ie) Error() string {
 	var sb = new(strings.Builder)
 
 	if 0 != len(cls.values) {
@@ -75,20 +75,20 @@ func (cls *IError) Error() string {
 	return sb.String()
 }
 
-func (cls *IError) GetCode() string {
+func (cls *ie) GetCode() string {
 	return cls.code
 }
 
-func (cls *IError) IsType(errorType ErrorType) bool {
+func (cls *ie) IsType(errorType ErrorType) bool {
 	return cls.t == errorType
 }
 
-func (cls *IError) Relation(errs ...Error) Error {
+func (cls *ie) Relation(errs ...Error) Error {
 	cls.relations = append(cls.relations, errs...)
 
 	return cls
 }
 
-func (cls *IError) Relations() []Error {
+func (cls *ie) Relations() []Error {
 	return cls.relations
 }

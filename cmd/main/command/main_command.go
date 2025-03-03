@@ -18,13 +18,13 @@ func NewMainCommand() *cobra.Command {
 			if err := loader.LoadConfig("config", &configuration.Configuration); nil != err {
 				cmd.PrintErrf("error loading config: %v\n", err)
 
-				return
+				os.Exit(1)
 			}
 
 			if err := i18n.Init(); nil != err {
 				cmd.PrintErrf("Error init i18n: %v\n", err)
 
-				return
+				os.Exit(1)
 			}
 
 			if configuration.Configuration.Sentry.Enable && "" != configuration.Configuration.Sentry.Dsn {
@@ -42,7 +42,7 @@ func NewMainCommand() *cobra.Command {
 				if err := sentry.Init(option); err != nil {
 					cmd.PrintErrf("Error init sentry: %v\n", err)
 
-					return
+					os.Exit(1)
 				}
 			}
 

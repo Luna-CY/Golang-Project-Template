@@ -125,7 +125,7 @@ type {{.ModelName}} interface {
 	// if {{.ModelName}} not found, return error type with errors.ErrorTypeRecordNotFound
 	Take{{.ModelName}}By{{.FieldName}}(ctx context.Context, {{.LowerFieldName}} {{.FieldType}}, lock bool) (*model.{{.ModelName}}, errors.Error)`
 
-			takeByList[i] = strings.NewReplacer("{{.ModelName}}", modelName, "{{.FieldName}}", tokens[0], "{{.LowerFieldName}}", strings.ToLower(tokens[0]), "{{.FieldType}}", tokens[1]).Replace(takeByMethodCode)
+			takeByList[i] = strings.NewReplacer("{{.ModelName}}", modelName, "{{.FieldName}}", tokens[0], "{{.LowerFieldName}}", strings.ToLower(string(tokens[0][0]))+tokens[0][1:], "{{.FieldType}}", tokens[1]).Replace(takeByMethodCode)
 		}
 
 		methods.WriteString(strings.Join(takeByList, ""))
@@ -146,7 +146,7 @@ type {{.ModelName}} interface {
 	// Delete{{.ModelName}}By{{.FieldName}} delete {{.ModelName}} by {{.FieldName}} from db
 	Delete{{.ModelName}}By{{.FieldName}}(ctx context.Context, {{.LowerFieldName}} {{.FieldType}}) errors.Error`
 
-			deleteByList[i] = strings.NewReplacer("{{.ModelName}}", modelName, "{{.FieldName}}", tokens[0], "{{.LowerFieldName}}", strings.ToLower(tokens[0]), "{{.FieldType}}", tokens[1]).Replace(deleteByMethodCode)
+			deleteByList[i] = strings.NewReplacer("{{.ModelName}}", modelName, "{{.FieldName}}", tokens[0], "{{.LowerFieldName}}", strings.ToLower(string(tokens[0][0]))+tokens[0][1:], "{{.FieldType}}", tokens[1]).Replace(deleteByMethodCode)
 		}
 
 		methods.WriteString(strings.Join(deleteByList, ""))
@@ -167,7 +167,7 @@ type {{.ModelName}} interface {
 	// BatchTake{{.ModelName}}By{{.FieldName}} get {{.ModelName}} by {{.FieldName}} from db
 	BatchTake{{.ModelName}}By{{.FieldName}}(ctx context.Context, {{.LowerFieldName}} []{{.FieldType}}, lock bool) ([]*model.{{.ModelName}}, errors.Error)`
 
-			batchTakeByList[i] = strings.NewReplacer("{{.ModelName}}", modelName, "{{.FieldName}}", tokens[0], "{{.LowerFieldName}}", strings.ToLower(tokens[0]), "{{.FieldType}}", tokens[1]).Replace(batchTakeByMethodCode)
+			batchTakeByList[i] = strings.NewReplacer("{{.ModelName}}", modelName, "{{.FieldName}}", tokens[0], "{{.LowerFieldName}}", strings.ToLower(string(tokens[0][0]))+tokens[0][1:], "{{.FieldType}}", tokens[1]).Replace(batchTakeByMethodCode)
 		}
 
 		methods.WriteString(strings.Join(batchTakeByList, ""))
@@ -265,7 +265,7 @@ import (
 
 func (cls *{{.ModelName}}) Take{{.ModelName}}By{{.FieldName}}(ctx context.Context, {{.LowerFieldName}} {{.FieldType}}, lock bool) (*model.{{.ModelName}}, errors.Error) {
 	if {{.DefaultValue}} == {{.LowerFieldName}} {
-		logger.SugarLogger(ctx).Errorf("I.D.{{.ModelName}}.TakeBy{{.FieldName}} {{.LowerFieldName}} is %v stack %s", {{.DefaultValue}}, string(debug.Stack()))
+		logger.SugarLogger(ctx).Errorf("I.D.{{.ModelName}}.TakeBy{{.FieldName}} {{.LowerFieldName}} is %v stack %s", {{.LowerFieldName}}, string(debug.Stack()))
 
 		return nil, errors.ErrorServerInternalError("{{.Code}}.17")
 	}
@@ -274,7 +274,7 @@ func (cls *{{.ModelName}}) Take{{.ModelName}}By{{.FieldName}}(ctx context.Contex
 	session = dao.Lock(session, lock)
 
 	var {{.LowerModelName}} *model.{{.ModelName}}
-	if err := session.Where("{{.LowerFieldName}} = ?", {{.LowerFieldName}}).Take(&{{.LowerModelName}}).Error; nil != err {
+	if err := session.Where("{{.DbFieldName}} = ?", {{.LowerFieldName}}).Take(&{{.LowerModelName}}).Error; nil != err {
 		if errors.Is(err, gorm.ErrRecordNotFound) {
 			return nil, errors.ErrorRecordNotFound("{{.Code}}.26")
 		}
@@ -300,12 +300,12 @@ import (
 
 func (cls *{{.ModelName}}) Delete{{.ModelName}}By{{.FieldName}}(ctx context.Context, {{.LowerFieldName}} {{.FieldType}}) errors.Error {
 	if {{.DefaultValue}} == {{.LowerFieldName}} {
-		logger.SugarLogger(ctx).Errorf("I.D.{{.ModelName}}.DeleteBy{{.FieldName}}: {{.LowerFieldName}} is %v stack %s", {{.DefaultValue}}, string(debug.Stack()))
+		logger.SugarLogger(ctx).Errorf("I.D.{{.ModelName}}.DeleteBy{{.FieldName}}: {{.LowerFieldName}} is %v stack %s", {{.LowerFieldName}}, string(debug.Stack()))
 
 		return errors.ErrorServerInternalError("{{.Code}}.15")
 	}
 
-	if err := cls.GetDb(ctx).Model(new(model.{{.ModelName}})).Where("{{.LowerFieldName}} = ?", {{.LowerFieldName}}).Delete(nil).Error; nil != err {
+	if err := cls.GetDb(ctx).Model(new(model.{{.ModelName}})).Where("{{.DbFieldName}} = ?", {{.LowerFieldName}}).Delete(nil).Error; nil != err {
 		logger.SugarLogger(ctx).Errorf("I.D.{{.ModelName}}.DeleteBy{{.FieldName}}: delete {{.ModelName}} failed, err %v, stack %s", err, string(debug.Stack()))
 
 		return errors.ErrorServerInternalError("{{.Code}}.21")
@@ -337,7 +337,7 @@ func (cls *{{.ModelName}}) BatchTake{{.ModelName}}By{{.FieldName}}(ctx context.C
 	session = dao.Lock(session, lock)
 
 	var data []*model.{{.ModelName}}
-	if err := session.Where("{{.LowerFieldName}} in (?)", values).Find(&data).Error; nil != err {
+	if err := session.Where("{{.DbFieldName}} in (?)", values).Find(&data).Error; nil != err {
 		logger.SugarLogger(ctx).Errorf("I.D.{{.ModelName}}.BatchTakeBy{{.FieldName}}: batch take by {{.LowerFieldName}} failed, err %v, stack %s", err, string(debug.Stack()))
 
 		return nil, errors.ErrorServerInternalError("{{.Code}}.26")
@@ -399,7 +399,7 @@ func GenerateDaoFiles(modelName string, save bool, takeBy []string, deleteBy []s
 		}
 
 		var code = fmt.Sprintf("%s.%s.%s", "ID"+istrings.GetUpperChars(modelName)+"_"+strings.ToUpper(modelName[len(modelName)-2:]), istrings.GetUpperChars(modelName)+"_"+strings.ToUpper(modelName[len(modelName)-2:]), "T"+istrings.GetUpperChars(modelName)+"B"+istrings.GetUpperChars(tokens[0])+"_"+strings.ToUpper(tokens[0][len(tokens[0])-2:]))
-		var kvs = append(kvs, "{{.FieldName}}", tokens[0], "{{.LowerFieldName}}", strings.ToLower(tokens[0]), "{{.FieldType}}", tokens[1], "{{.DefaultValue}}", tokens[2], "{{.Code}}", code)
+		var kvs = append(kvs, "{{.FieldName}}", tokens[0], "{{.LowerFieldName}}", strings.ToLower(string(tokens[0][0]))+tokens[0][1:], "{{.DbFieldName}}", istrings.CamelCaseToUnderscore(tokens[0]), "{{.FieldType}}", tokens[1], "{{.DefaultValue}}", tokens[2], "{{.Code}}", code)
 
 		// generate impl_{{ModelName}}_take_by_{{FieldName}}.go
 		var path = filepath.Join(root, fmt.Sprintf("impl_%s_take_%s_by_%s.go", istrings.CamelCaseToUnderscore(modelName), istrings.CamelCaseToUnderscore(modelName), istrings.CamelCaseToUnderscore(tokens[0])))
@@ -427,7 +427,7 @@ func GenerateDaoFiles(modelName string, save bool, takeBy []string, deleteBy []s
 		}
 
 		var code = fmt.Sprintf("%s.%s.%s", "ID"+istrings.GetUpperChars(modelName)+"_"+strings.ToUpper(modelName[len(modelName)-2:]), istrings.GetUpperChars(modelName)+"_"+strings.ToUpper(modelName[len(modelName)-2:]), "D"+istrings.GetUpperChars(modelName)+"B"+istrings.GetUpperChars(tokens[0])+"_"+strings.ToUpper(tokens[0][len(tokens[0])-2:]))
-		var kvs = append(kvs, "{{.FieldName}}", tokens[0], "{{.LowerFieldName}}", strings.ToLower(tokens[0]), "{{.FieldType}}", tokens[1], "{{.DefaultValue}}", tokens[2], "{{.Code}}", code)
+		var kvs = append(kvs, "{{.FieldName}}", tokens[0], "{{.LowerFieldName}}", strings.ToLower(string(tokens[0][0]))+tokens[0][1:], "{{.DbFieldName}}", istrings.CamelCaseToUnderscore(tokens[0]), "{{.FieldType}}", tokens[1], "{{.DefaultValue}}", tokens[2], "{{.Code}}", code)
 
 		// generate impl_{{ModelName}}_delete_by_{{FieldName}}.go
 		var path = filepath.Join(root, fmt.Sprintf("impl_%s_delete_%s_by_%s.go", istrings.CamelCaseToUnderscore(modelName), istrings.CamelCaseToUnderscore(modelName), istrings.CamelCaseToUnderscore(tokens[0])))
@@ -451,7 +451,7 @@ func GenerateDaoFiles(modelName string, save bool, takeBy []string, deleteBy []s
 		}
 
 		var code = fmt.Sprintf("%s.%s.%s", "ID"+istrings.GetUpperChars(modelName)+"_"+strings.ToUpper(modelName[len(modelName)-2:]), istrings.GetUpperChars(modelName)+"_"+strings.ToUpper(modelName[len(modelName)-2:]), "BT"+istrings.GetUpperChars(modelName)+"B"+istrings.GetUpperChars(tokens[0])+"_"+strings.ToUpper(tokens[0][len(tokens[0])-2:]))
-		var kvs = append(kvs, "{{.FieldName}}", tokens[0], "{{.LowerFieldName}}", strings.ToLower(tokens[0]), "{{.FieldType}}", tokens[1], "{{.Code}}", code)
+		var kvs = append(kvs, "{{.FieldName}}", tokens[0], "{{.LowerFieldName}}", strings.ToLower(string(tokens[0][0]))+tokens[0][1:], "{{.DbFieldName}}", istrings.CamelCaseToUnderscore(tokens[0]), "{{.FieldType}}", tokens[1], "{{.Code}}", code)
 
 		// generate impl_{{ModelName}}_batch_take_by_{{FieldName}}.go
 		var path = filepath.Join(root, fmt.Sprintf("impl_%s_batch_take_%s_by_%s.go", istrings.CamelCaseToUnderscore(modelName), istrings.CamelCaseToUnderscore(modelName), istrings.CamelCaseToUnderscore(tokens[0])))

@@ -10,3 +10,7 @@ docs:
 .PHONY: http-web
 http-web:
 	go run -tags docs,debug ./cmd/main/main.go server http web
+
+.PHONY: generate
+generate:
+	go generate ./model

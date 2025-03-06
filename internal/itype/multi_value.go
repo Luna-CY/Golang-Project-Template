@@ -3,6 +3,7 @@ package itype
 import (
 	"database/sql/driver"
 	"encoding/json"
+
 	"github.com/Luna-CY/Golang-Project-Template/internal/errors"
 )
 
@@ -37,7 +38,7 @@ func (cls *MultiValues[T]) Scan(value any) error {
 		return nil
 	}
 
-	return errors.New(errors.ErrorTypeServerInternalError, "invalid values")
+	return errors.New(errors.ErrorTypeServerInternalError, "II_PE.MV_ES.40", "invalid values")
 }
 
 func (cls *MultiValues[T]) Value() (driver.Value, error) {

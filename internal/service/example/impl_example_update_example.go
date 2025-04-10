@@ -12,7 +12,7 @@ import (
 
 func (cls *Example) UpdateExample(ctx context.Context, example *model.Example, field1 *string, field2 *uint64, field3 *bool, field4 *model.ExampleEnumFieldType) errors.Error {
 	if nil == example {
-		logger.SugarLogger(ctx, logger.WithStack()).Errorf("I.S.Example.UpdateExample: example is nil stack %s", string(debug.Stack()))
+		logger.SugarLogger(logger.WithRequestId(ctx), logger.WithStack()).Errorf("I.S.Example.UpdateExample: example is nil stack %s", string(debug.Stack()))
 
 		return errors.ErrorServerInternalError("ISE_LE.E_LE.UE_LE.16")
 	}

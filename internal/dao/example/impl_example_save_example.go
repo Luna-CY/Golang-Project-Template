@@ -13,7 +13,7 @@ import (
 
 func (cls *Example) SaveExample(ctx context.Context, example *model.Example) errors.Error {
 	if nil == example {
-		logger.SugarLogger(ctx, logger.WithStack()).Errorf("I.D.Example.SaveExample example is nil stack %s", string(debug.Stack()))
+		logger.SugarLogger(logger.WithRequestId(ctx), logger.WithStack()).Errorf("I.D.Example.SaveExample example is nil stack %s", string(debug.Stack()))
 
 		return errors.ErrorServerInternalError("IDE_LE.E_LE.SE.17")
 	}
@@ -23,7 +23,7 @@ func (cls *Example) SaveExample(ctx context.Context, example *model.Example) err
 		example.CreateTime = pointer.New(time.Now().Unix())
 
 		if err := cls.GetDb(ctx).Model(new(model.Example)).Create(&example).Error; nil != err {
-			logger.SugarLogger(ctx, logger.WithStack()).Errorf("I.D.Example.SaveExample create example failed, err %v, stack %s", err, string(debug.Stack()))
+			logger.SugarLogger(logger.WithRequestId(ctx), logger.WithStack()).Errorf("I.D.Example.SaveExample create example failed, err %v, stack %s", err, string(debug.Stack()))
 
 			return errors.ErrorServerInternalError("IDE_LE.E_LE.SE.27")
 		}
@@ -32,7 +32,7 @@ func (cls *Example) SaveExample(ctx context.Context, example *model.Example) err
 	}
 
 	if err := cls.GetDb(ctx).Model(new(model.Example)).Where("id = ?", example.Id).Updates(&example).Error; nil != err {
-		logger.SugarLogger(ctx, logger.WithStack()).Errorf("I.D.Example.SaveExample save example failed, err %v, stack %s", err, string(debug.Stack()))
+		logger.SugarLogger(logger.WithRequestId(ctx), logger.WithStack()).Errorf("I.D.Example.SaveExample save example failed, err %v, stack %s", err, string(debug.Stack()))
 
 		return errors.ErrorServerInternalError("IDE_LE.E_LE.SE.36")
 	}

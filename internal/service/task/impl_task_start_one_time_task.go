@@ -46,7 +46,7 @@ func (cls *Task) run(task *oneTimeTask) {
 	defer func() {
 		var err = recover()
 		if nil != err {
-			logger.SugarLogger(task.ctx, logger.WithStack()).Errorf("I.S.Task.run task run faillback: %s", err)
+			logger.SugarLogger(logger.WithRequestId(task.ctx), logger.WithStack()).Errorf("I.S.Task.run task run faillback: %s", err)
 		}
 	}()
 

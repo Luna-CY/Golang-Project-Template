@@ -2,6 +2,9 @@ package dao
 
 import (
 	"fmt"
+	"sync"
+	"time"
+
 	"github.com/Luna-CY/Golang-Project-Template/internal/configuration"
 	"github.com/Luna-CY/Golang-Project-Template/internal/context"
 	"github.com/Luna-CY/Golang-Project-Template/internal/context/contextutil"
@@ -11,8 +14,6 @@ import (
 	transactional2 "github.com/Luna-CY/Golang-Project-Template/internal/transactional"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
-	"sync"
-	"time"
 )
 
 var (
@@ -24,7 +25,8 @@ func New() *BaseDao {
 	return &BaseDao{}
 }
 
-type BaseDao struct{}
+type BaseDao struct {
+}
 
 func (cls *BaseDao) GetDb(ctx context.Context) *gorm.DB {
 	if transaction, ok := contextutil.GetTransactional(ctx); ok {
@@ -42,7 +44,7 @@ func (cls *BaseDao) BeginTransaction(ctx context.Context) (transactional.Transac
 
 	var db = cls.GetDb(ctx).Begin()
 	if nil != db.Error {
-		logger.SugarLogger(ctx).Errorf("I.D.BaseDao.BeginTransaction start transaction error: %v", db.Error)
+		logger.SugarLogger(logger.WithRequestId(ctx), logger.WithStack()).Errorf("I.D.BaseDao.BeginTransaction start transaction error: %v", db.Error)
 
 		return nil, errors.New(errors.ErrorTypeServerInternalError, "ID_AO.BD_AO.BT_ON.47", "start transaction error: %v", db.Error)
 	}
@@ -62,7 +64,7 @@ func (cls *BaseDao) mysql(ctx context.Context) *gorm.DB {
 		}
 
 		if configuration.Configuration.Database.Mysql.ConnPool.Enable && 0 != configuration.Configuration.Database.Mysql.ConnPool.MaxIdleConn && 0 != configuration.Configuration.Database.Mysql.ConnPool.MaxOpenConn {
-			logger.SugarLogger(ctx).Infof("enable mysql connections pool，Max Idle Conn: %d, Max Open Conn: %d, Max Idle Conn Life Time: %d min", configuration.Configuration.Database.Mysql.ConnPool.MaxIdleConn, configuration.Configuration.Database.Mysql.ConnPool.MaxOpenConn, configuration.Configuration.Database.Mysql.ConnPool.MaxIdleLifeTime)
+			logger.SugarLogger().Infof("enable mysql connections pool，Max Idle Conn: %d, Max Open Conn: %d, Max Idle Conn Life Time: %d min", configuration.Configuration.Database.Mysql.ConnPool.MaxIdleConn, configuration.Configuration.Database.Mysql.ConnPool.MaxOpenConn, configuration.Configuration.Database.Mysql.ConnPool.MaxIdleLifeTime)
 
 			driver, err := mi.DB()
 			if nil != err {

@@ -12,7 +12,7 @@ import (
 
 func (cls *Example) CreateExample(ctx context.Context, field1 string, field2 uint64, field3 bool, field4 model.ExampleEnumFieldType) (*model.Example, errors.Error) {
 	if "" == field1 || 0 == field2 {
-		logger.SugarLogger(ctx, logger.WithStack()).Errorf("I.S.Example.CreateExample: field1 is %s field2 is %d stack %s", field1, field2, string(debug.Stack()))
+		logger.SugarLogger(logger.WithRequestId(ctx), logger.WithStack()).Errorf("I.S.Example.CreateExample: field1 is %s field2 is %d stack %s", field1, field2, string(debug.Stack()))
 
 		return nil, errors.ErrorServerInternalError("ISE_LE.E_LE.CE_LE.16")
 	}

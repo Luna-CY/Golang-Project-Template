@@ -11,7 +11,7 @@ import (
 
 func (cls *Example) GetExampleById(ctx context.Context, id uint64, lock bool) (*model.Example, errors.Error) {
 	if 0 == id {
-		logger.SugarLogger(ctx, logger.WithStack()).Errorf("I.S.Example.GetExampleById: id is 0 stack %s", string(debug.Stack()))
+		logger.SugarLogger(logger.WithRequestId(ctx), logger.WithStack()).Errorf("I.S.Example.GetExampleById: id is 0 stack %s", string(debug.Stack()))
 
 		return nil, errors.ErrorServerInternalError("ISE_LE.E_LE.GEBI_ID.15")
 	}

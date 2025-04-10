@@ -30,7 +30,7 @@ func (cls *BaseService) WithTransaction(ctx context.Context, call func(ctx conte
 
 		defer func() {
 			if err := transaction.Rollback(ctx); nil != err {
-				logger.SugarLogger(ctx).Errorf("I.S.Transaction.WithTransaction rollback transaction faillback. err: %v", err)
+				logger.SugarLogger(ctx, logger.WithStack()).Errorf("I.S.Transaction.WithTransaction rollback transaction faillback. err: %v", err)
 			}
 		}()
 

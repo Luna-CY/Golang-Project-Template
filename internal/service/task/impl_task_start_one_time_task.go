@@ -1,13 +1,14 @@
 package task
 
 import (
+	"sync/atomic"
+	"time"
+
 	"github.com/Luna-CY/Golang-Project-Template/internal/context"
 	"github.com/Luna-CY/Golang-Project-Template/internal/context/contextutil"
 	"github.com/Luna-CY/Golang-Project-Template/internal/errors"
 	"github.com/Luna-CY/Golang-Project-Template/internal/logger"
 	gonanoid "github.com/matoous/go-nanoid"
-	"sync/atomic"
-	"time"
 )
 
 func (cls *Task) StartOneTimeTask(ctx context.Context, tag string, values map[string]any, caller func(ctx context.Context, values map[string]any, progress func(int64)) errors.Error, timeout time.Duration, unique bool) (string, errors.Error) {
@@ -45,7 +46,7 @@ func (cls *Task) run(task *oneTimeTask) {
 	defer func() {
 		var err = recover()
 		if nil != err {
-			logger.SugarLogger(task.ctx).Errorf("I.S.Task.run task run faillback: %s", err)
+			logger.SugarLogger(task.ctx, logger.WithStack()).Errorf("I.S.Task.run task run faillback: %s", err)
 		}
 	}()
 

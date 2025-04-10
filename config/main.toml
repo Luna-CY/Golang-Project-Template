@@ -2,10 +2,15 @@ debug = false
 
 [logger]
 level = "error"
-outputs = ["stdout", "./logs/main.log"]
+outputs = ["stdout", "feishu", "./logs/main.log"]
 max_size = 100
 max_age = 30
 max_backups = 10
+
+[logger.customize_writer.feishu]
+enabled = false
+level = "error"
+webhook = "https://open.feishu.cn/open-apis/bot/v2/hook/1234567890"
 
 [database.mysql]
 dsn = "user:password@tcp(127.0.0.1:3306)/database?charset=utf8mb4&loc=Local&multiStatements=true" # environment special config

@@ -3,11 +3,18 @@ package configuration
 var Configuration struct {
 	Debug  bool `mapstructure:"debug"` // Debug mode
 	Logger struct {
-		Level      string   `mapstructure:"level"`       // Log level, allow debug, info, warn, error, panic
-		Outputs    []string `mapstructure:"outputs"`     // Log outputs, allow stdout, stderr, or file paths
-		MaxSize    int      `mapstructure:"max_size"`    // max log file size, in MB
-		MaxAge     int      `mapstructure:"max_age"`     // max log file age, in days
-		MaxBackups int      `mapstructure:"max_backups"` // max log file backups
+		Level           string   `mapstructure:"level"`       // Log level, allow debug, info, warn, error, panic
+		Outputs         []string `mapstructure:"outputs"`     // Log outputs, allow stdout, stderr, or file paths
+		MaxSize         int      `mapstructure:"max_size"`    // max log file size, in MB
+		MaxAge          int      `mapstructure:"max_age"`     // max log file age, in days
+		MaxBackups      int      `mapstructure:"max_backups"` // max log file backups
+		CustomizeWriter struct {
+			Feishu struct {
+				Enabled bool   `mapstructure:"enabled"` // if true, enable feishu
+				Level   string `mapstructure:"level"`   // feishu log level, allow debug, info, warn, error, panic
+				Webhook string `mapstructure:"webhook"` // feishu webhook
+			} `mapstructure:"feishu"` // feishu configuration
+		} `mapstructure:"customize_writer"` // customize writer configuration
 	} `mapstructure:"logger"` // Logger configuration
 	Database struct {
 		Mysql struct {

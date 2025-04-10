@@ -1,17 +1,18 @@
 package example
 
 import (
+	"runtime/debug"
+
 	"github.com/Luna-CY/Golang-Project-Template/internal/context"
 	"github.com/Luna-CY/Golang-Project-Template/internal/errors"
 	"github.com/Luna-CY/Golang-Project-Template/internal/logger"
 	"github.com/Luna-CY/Golang-Project-Template/internal/util/pointer"
 	"github.com/Luna-CY/Golang-Project-Template/model"
-	"runtime/debug"
 )
 
 func (cls *Example) UpdateExample(ctx context.Context, example *model.Example, field1 *string, field2 *uint64, field3 *bool, field4 *model.ExampleEnumFieldType) errors.Error {
 	if nil == example {
-		logger.SugarLogger(ctx).Errorf("I.S.Example.UpdateExample: example is nil stack %s", string(debug.Stack()))
+		logger.SugarLogger(ctx, logger.WithStack()).Errorf("I.S.Example.UpdateExample: example is nil stack %s", string(debug.Stack()))
 
 		return errors.ErrorServerInternalError("ISE_LE.E_LE.UE_LE.16")
 	}

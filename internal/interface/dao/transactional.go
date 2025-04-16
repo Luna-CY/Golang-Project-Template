@@ -7,7 +7,7 @@ import (
 )
 
 type Transactional interface {
-	// BeginTransaction begin transaction on manual
-	// provider a method to start transaction for services, do not call this method in DAO layer
+	// BeginTransaction 手动开始事务
+	// 提供一个方法给服务层开始事务，不要在 DAO 层调用此方法
 	BeginTransaction(ctx context.Context) (transactional.Transactional, errors.Error)
 }

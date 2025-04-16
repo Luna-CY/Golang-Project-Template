@@ -6,6 +6,6 @@ import (
 )
 
 type Transactional interface {
-	// WithTransaction begin a transaction and call the provided function, return error if any error occurred
+	// WithTransaction 开始一个事务并调用提供的函数，如果任何错误发生，返回 errors.Error
 	WithTransaction(ctx context.Context, call func(ctx context.Context) errors.Error) errors.Error
 }

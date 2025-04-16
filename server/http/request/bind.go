@@ -1,10 +1,11 @@
 package request
 
 import (
-	"github.com/Luna-CY/Golang-Project-Template/internal/errors"
-	"github.com/gin-gonic/gin"
 	"reflect"
 	"strings"
+
+	"github.com/Luna-CY/Golang-Project-Template/internal/errors"
+	"github.com/gin-gonic/gin"
 )
 
 type Handler func(dst any) errors.Error
@@ -20,7 +21,7 @@ func BindHandlerTrimSliceEmptyValue(dst any) errors.Error {
 	case reflect.Struct:
 		for i := 0; i < rv.NumField(); i++ {
 			if err := BindHandlerTrimSliceEmptyValue(rv.Field(i).Addr().Interface()); nil != err {
-				return err.Relation(errors.ErrorServerInternalError("SHR_ST.BHTSEV_UE.23"))
+				return err.Relation(errors.ErrorServerInternalError("SHR_ST.BHTSEV_UE.233330"))
 			}
 		}
 	case reflect.Slice:
@@ -47,16 +48,16 @@ func BindHandlerTrimSliceEmptyValue(dst any) errors.Error {
 
 func ShouldBindJSON(c *gin.Context, dst any, handlers ...Handler) errors.Error {
 	if err := c.ShouldBindJSON(dst); nil != err {
-		return errors.New(errors.ErrorTypeInvalidRequest, "SHR_ST.SBJ_ON.50", err)
+		return errors.New(errors.ErrorTypeInvalidRequest, "SHR_ST.SBJ_ON.503337", err)
 	}
 
 	if err := trimStringSpace(dst); nil != err {
-		return err.Relation(errors.ErrorServerInternalError("SHR_ST.SBJ_ON.54"))
+		return err.Relation(errors.ErrorServerInternalError("SHR_ST.SBJ_ON.543340"))
 	}
 
 	for _, handler := range handlers {
 		if err := handler(dst); nil != err {
-			return err.Relation(errors.ErrorServerInternalError("SHR_ST.SBJ_ON.59"))
+			return err.Relation(errors.ErrorServerInternalError("SHR_ST.SBJ_ON.593345"))
 		}
 	}
 
@@ -65,16 +66,16 @@ func ShouldBindJSON(c *gin.Context, dst any, handlers ...Handler) errors.Error {
 
 func ShouldBindForm(c *gin.Context, dst any, handlers ...Handler) errors.Error {
 	if err := c.ShouldBind(dst); nil != err {
-		return errors.New(errors.ErrorTypeInvalidRequest, "SHR_ST.SBF_RM.68", err)
+		return errors.New(errors.ErrorTypeInvalidRequest, "SHR_ST.SBF_RM.683351", err)
 	}
 
 	if err := trimStringSpace(dst); nil != err {
-		return err.Relation(errors.ErrorServerInternalError("SHR_ST.SBF_RM.72"))
+		return err.Relation(errors.ErrorServerInternalError("SHR_ST.SBF_RM.723354"))
 	}
 
 	for _, handler := range handlers {
 		if err := handler(dst); nil != err {
-			return err.Relation(errors.ErrorServerInternalError("SHR_ST.SBF_RM.77"))
+			return err.Relation(errors.ErrorServerInternalError("SHR_ST.SBF_RM.773401"))
 		}
 	}
 
@@ -101,7 +102,7 @@ func trimStringSpace(v any) errors.Error {
 			}
 
 			if err := trimStringSpace(field.Addr().Interface()); nil != err {
-				return err.Relation(errors.ErrorServerInternalError("SHR_ST.TSS_CE.104"))
+				return err.Relation(errors.ErrorServerInternalError("SHR_ST.TSS_CE.1043407"))
 			}
 		}
 	case reflect.Slice:
@@ -135,7 +136,7 @@ func trimStringSpace(v any) errors.Error {
 				rv.SetMapIndex(key, reflect.ValueOf(strings.TrimSpace(value.String())))
 			case reflect.Struct, reflect.Slice, reflect.Map:
 				if err := trimStringSpace(value.Interface()); nil != err {
-					return err.Relation(errors.ErrorServerInternalError("SHR_ST.TSS_CE.138"))
+					return err.Relation(errors.ErrorServerInternalError("SHR_ST.TSS_CE.1383413"))
 				}
 			default:
 				// 其他类型不处理

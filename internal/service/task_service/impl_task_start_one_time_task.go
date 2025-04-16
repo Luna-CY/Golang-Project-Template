@@ -1,4 +1,4 @@
-package task
+package task_service
 
 import (
 	"sync/atomic"
@@ -18,7 +18,7 @@ func (cls *Task) StartOneTimeTask(ctx context.Context, tag string, values map[st
 	if unique {
 		for id, task := range cls.tasks {
 			if task.tag == tag && 1 == atomic.LoadInt32(&task.processing) {
-				return "", errors.New(errors.ErrorTypeServerInternalError, "IST_SK.T_SK.SOTT_SK.20", "type %s only one can be executed at the same time, current running task id: %s", tag, id)
+				return "", errors.New(errors.ErrorTypeServerInternalError, "IST_SK.T_SK.SOTT_SK.213129", "type %s only one can be executed at the same time, current running task id: %s", tag, id)
 			}
 		}
 	}

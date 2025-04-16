@@ -8,7 +8,7 @@ const (
 	ExampleEnumFieldTypeC = ExampleEnumFieldType(3) // Example enum field C
 )
 
-//go:generate go run ../cmd/main/main.go generate dao --save --take-by Id=uint64=0 --batch-take-by Id=uint64
+//go:generate go run ../cmd/main/main.go generate dao --table examples --save --take-by Id=uint64=0 --batch-take-by Id=uint64
 
 type Example struct {
 	Model
@@ -17,4 +17,8 @@ type Example struct {
 	Field2 *uint64               `gorm:"type:uint;not null;default:0"`          // Example field 2
 	Field3 *bool                 `gorm:"type:bool;not null;default:false"`      // Example field 3
 	Field4 *ExampleEnumFieldType `gorm:"type:uint;not null;default:1"`          // Example field 4
+}
+
+func (cls *Example) TableName() string {
+	return "examples"
 }

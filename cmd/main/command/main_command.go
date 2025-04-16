@@ -1,13 +1,14 @@
 package command
 
 import (
+	"os"
+
 	"github.com/Luna-CY/Golang-Project-Template/internal/configuration"
 	"github.com/Luna-CY/Golang-Project-Template/internal/configuration/loader"
 	"github.com/Luna-CY/Golang-Project-Template/internal/i18n"
 	"github.com/Luna-CY/Golang-Project-Template/internal/runtime"
 	"github.com/getsentry/sentry-go"
 	"github.com/spf13/cobra"
-	"os"
 )
 
 func NewMainCommand() *cobra.Command {
@@ -23,8 +24,6 @@ func NewMainCommand() *cobra.Command {
 
 			if err := i18n.Init(); nil != err {
 				cmd.PrintErrf("Error init i18n: %v\n", err)
-
-				os.Exit(1)
 			}
 
 			if configuration.Configuration.Sentry.Enable && "" != configuration.Configuration.Sentry.Dsn {

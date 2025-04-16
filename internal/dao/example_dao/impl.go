@@ -1,4 +1,4 @@
-package example
+package example_dao
 
 import "github.com/Luna-CY/Golang-Project-Template/internal/dao"
 

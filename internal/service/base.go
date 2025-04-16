@@ -25,7 +25,7 @@ func (cls *BaseService) WithTransaction(ctx context.Context, call func(ctx conte
 	if !contextutil.CheckOnTransactional(ctx) {
 		transaction, err = cls.transactional.BeginTransaction(ctx)
 		if nil != err {
-			return err.Relation(errors.ErrorServerInternalError("IS_CE.BS_CE.WT_ON.28"))
+			return err.Relation(errors.ErrorServerInternalError("IS_CE.BS_CE.WT_ON.283257"))
 		}
 
 		defer func() {
@@ -38,12 +38,12 @@ func (cls *BaseService) WithTransaction(ctx context.Context, call func(ctx conte
 	}
 
 	if err := call(ctx); nil != err {
-		return err.Relation(errors.ErrorServerInternalError("IS_CE.BS_CE.WT_ON.41"))
+		return err.Relation(errors.ErrorServerInternalError("IS_CE.BS_CE.WT_ON.413302"))
 	}
 
 	if nil != transaction {
 		if err := transaction.Commit(ctx); nil != err {
-			return err.Relation(errors.ErrorServerInternalError("IS_CE.BS_CE.WT_ON.46"))
+			return err.Relation(errors.ErrorServerInternalError("IS_CE.BS_CE.WT_ON.463305"))
 		}
 	}
 

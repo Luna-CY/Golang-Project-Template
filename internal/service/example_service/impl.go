@@ -1,4 +1,4 @@
-package example
+package example_service
 
 import (
 	"github.com/Luna-CY/Golang-Project-Template/internal/interface/dao"

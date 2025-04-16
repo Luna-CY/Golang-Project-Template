@@ -1,4 +1,4 @@
-package example
+package example_service
 
 import (
 	"runtime/debug"
@@ -14,7 +14,7 @@ func (cls *Example) CreateExample(ctx context.Context, field1 string, field2 uin
 	if "" == field1 || 0 == field2 {
 		logger.SugarLogger(logger.WithRequestId(ctx), logger.WithStack()).Errorf("I.S.Example.CreateExample: field1 is %s field2 is %d stack %s", field1, field2, string(debug.Stack()))
 
-		return nil, errors.ErrorServerInternalError("ISE_LE.E_LE.CE_LE.16")
+		return nil, errors.ErrorServerInternalError("ISE_LE.E_LE.CE_LE.173145")
 	}
 
 	var example = new(model.Example)
@@ -24,7 +24,7 @@ func (cls *Example) CreateExample(ctx context.Context, field1 string, field2 uin
 	example.Field4 = pointer.New(field4)
 
 	if err := cls.example.SaveExample(ctx, example); nil != err {
-		return nil, err.Relation(errors.ErrorServerInternalError("ISE_LE.E_LE.CE_LE.26"))
+		return nil, err.Relation(errors.ErrorServerInternalError("ISE_LE.E_LE.CE_LE.273151"))
 	}
 
 	return example, nil

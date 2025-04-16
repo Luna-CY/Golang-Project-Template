@@ -1,16 +1,15 @@
 package web
 
 import (
-	"github.com/Luna-CY/Golang-Project-Template/internal/build"
-	"github.com/Luna-CY/Golang-Project-Template/internal/docs"
-	"github.com/Luna-CY/Golang-Project-Template/internal/runtime"
-	"github.com/Luna-CY/Golang-Project-Template/server/http/gateway/web/handler"
-	"github.com/Luna-CY/Golang-Project-Template/server/http/router"
-	"github.com/gin-contrib/cors"
-	"github.com/gin-gonic/gin"
 	"io"
 	"net/http"
 	"time"
+
+	"github.com/Luna-CY/Golang-Project-Template/internal/build"
+	"github.com/Luna-CY/Golang-Project-Template/internal/docs"
+	"github.com/Luna-CY/Golang-Project-Template/internal/runtime"
+	"github.com/gin-contrib/cors"
+	"github.com/gin-gonic/gin"
 )
 
 func Register(engine *gin.Engine) {
@@ -32,13 +31,13 @@ func Register(engine *gin.Engine) {
 
 	{
 		// example
-		var example = handler.NewExample()
-		var group = root.Group("example")
+		// var example = handler.NewExample()
+		// var group = root.Group("example")
 
-		group.POST("create", router.Wrapper(example.Create))
-		group.POST("update", router.Wrapper(example.Update))
-		group.POST("list", router.Wrapper(example.List))
-		group.POST("detail", router.Wrapper(example.Detail))
+		// group.POST("create", router.Wrapper(example.Create))
+		// group.POST("update", router.Wrapper(example.Update))
+		// group.POST("list", router.Wrapper(example.List))
+		// group.POST("detail", router.Wrapper(example.Detail))
 	}
 }
 
